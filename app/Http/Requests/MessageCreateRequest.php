@@ -13,7 +13,7 @@ class MessageCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -33,8 +33,9 @@ class MessageCreateRequest extends FormRequest
     {
         return [
             'title.required'=>'请输入标题',
-            'title.max:40'=>'标题长度不能超过40',
+            'title.max'=>'标题长度过长',
             'content.required'=>'请输入留言内容',
+            'content.max'=>'留言内容过长',
         ];
     }
 }

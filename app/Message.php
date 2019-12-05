@@ -7,21 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     //
-    const CREATED_AT = 'creation_date';
+
+
     protected $table = 'message';
+
+    public $primaryKey = 'id';
+
+    public $fillable = [
+        'user_id','title','content','reply_name','reply_content','reply_time'
+    ];
+    //外键
+    public function user(){
+        return $this->belongsTo('App/User','user_id','uid');
+    }
+
     /**
      * @var array|string
      */
-    private $title;
-    /**
-     * @var array|string
-     */
-    private $content;
-    private $post_time;
-    private $reply_content;
-    private $reply_time;
-    /**
-     * @var \Illuminate\Session\SessionManager|\Illuminate\Session\Store
-     */
-    private $reply_name;
+
+
 }

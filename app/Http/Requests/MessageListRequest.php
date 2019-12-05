@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MessageUpdateRequest extends FormRequest
+class MessageListRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class MessageUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -26,16 +26,14 @@ class MessageUpdateRequest extends FormRequest
         return [
             'title'=>'required|max:40|string',
             'content'=>'required|string|max:255',
+            'created_at'=>'date_format:Y-m-d H:i:s',
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required' => '请输入标题',
-            'title.max:40' => '标题长度过长',
-            'content.required' => '请输入留言内容',
-            'content.max:255' => '留言内容过长',
+            'date_format'=>'该字段必须是日期格式',
         ];
     }
 }

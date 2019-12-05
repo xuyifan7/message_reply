@@ -7,10 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Users extends Model
 {
     //
-    public $timestamps = false;
+    //public $timestamps = false;
 
     protected $table = 'user';
-    private $uid;
+
+    public $primaryKey = 'uid';
+    /**
+     * 可以被批量赋值的属性。
+     *
+     * @var array
+     */
+  /*  protected $fillable = [
+        'name','password','email'
+    ];*/
+
     private $name;
     private $password;
     private $email;

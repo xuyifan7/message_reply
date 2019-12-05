@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
 
     public function rules(){
         return[
-            'name'=>'required|string|min:3|unique:user',
+            'name'=>'required|string|min:3',
             'password'=>'required|min:6',
         ];
     }
@@ -33,7 +33,6 @@ class LoginRequest extends FormRequest
         return[
             'name.nullable'=>'用户名不能为空',
             'name.min:3'=>'用户名不能少于三位',
-            'name.unique:user'=>'用户名已存在',
             'password.nullable'=>'密码不能为空',
             'password.min:6'=>'密码不能少于六位',
         ] ;

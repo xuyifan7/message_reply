@@ -4,77 +4,65 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageCreateRequest;
 use App\Http\Requests\MessageUpdateRequest;
-use App\Http\Requests\ReplyCreateRequest;
-use App\Http\Requests\ReplyUpdateRequest;
 use App\Message;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+//use App\Http\Controllers\Controller;
+use App\Http\Requests\MessageListRequest;
+use Illuminate\Support\Facades\DB;
 
 class MessageController extends Controller
 {
-    //
+
     public function create(MessageCreateRequest $request){
         $data = $request->validated();
-        //if ($request->validated()){
+        $user = session()->get('user');
+        if ($user){
+            $data['user_id'] = $user['uid'];
             $message = new Message;
-            $message->title = $request->input('title');
-            $message->content = $request->input('content');
-            $message->post_time = CREATED_AT;
-            $message->save();
-            return response()->json(['status'=>1,'msg'=>'create message success！','data'=>$message]);
-        /*}else{
-            return response()->json('create message failed!');
-        }*/
+            $mes_data = $message->create($data);
+            return response()->json(['status'=>1,'msg'=>'create message success！','data'=>$mes_data]);
+        }else{
+            return response()->json(['msg'=>'create message success！']);
+        }
     }
 
-    public function update(MessageUpdateRequest $request){
-        //if ($request->validated()){
-            //$mes = array();
-            $id = $request->input('id');
-            $title = $request->input('title');
-            $content = $request->input('content');
-            $post_time = CREATED_AT;
-            $message = Message::find($id);
-            $message->title = $title;
-            $message->content = $content;
-            $message->post_time = $post_time;
-            $message->save();
-
-        //}
-    }
-
-    public function delete(Request $request){
-        //
-        $id = 1;
-        $delete_mes = Message::where('id', $id)->delete();
-    }
-
-    public function reply_create(ReplyCreateRequest $request){
+    public function update(MessageUpdateRequest $request, $id){
         $data = $request->validated();
-            $message = new Message;
-            $message->reply_content = $request->input('reply_content');
-            $message->reply_time = CREATED_AT;
-            $message->reply_name = session('user');
-            $message->save();
-            return response()->json(['status'=>1,'msg'=>'create message success！','data'=>$message]);
-        /*}else{
-            return response()->json('create message failed!');
-        }*/
+        $message = Message::find($id);
+        $user = session()->get('user');
+        if ($user) {
+            $data['user_id'] = $user['uid'];
+            $mes_up = $message->update($data);
+            return response()->json(['status' => 1, 'msg' => 'update message success！', 'data' => $mes_up]);
+        }else{
+            return response()->json(['msg'=>'create message success！']);
+        }
     }
 
-    public function reply_update(ReplyUpdateRequest $request){
-
+    public function delete($id){
+        $user = session()->get('user');
+        if ($user) {
+            $message = Message::find($id);
+            $res = $message->delete();
+            if ($res) {
+                return response()->json(['status' => 1, 'msg' => 'delete message success!']);
+            } else {
+                return response()->json(['status' => 0, 'msg' => 'delete message failed!']);
+            }
+        }
     }
 
-    public function reply_delete(Request $request){
-
+    public function list(MessageListRequest $request){
+        $this->authorize('list', Post::class);
+        $data = $request->validated();
+        $messages = DB::table('message')->orderBy('created_at')->paginate(5)->get();
+        //$messages = Message::all()->orderBy('created_at');
+        return response()->json(['status'=>0,'msg'=>'messages list','data'=>$messages]);
     }
 
-    public function list(){
-
-    }
-
-    public function info(){
-
-    }
+/*    public function info(Request $request, $id){
+        //$data = $request->validated();
+        $message_info = Message::where('id', $id)->orderBy('created_at','desc')->paginate(5)->get();
+        return response()->json(['status'=>0,'msg'=>'messages of one user','data'=>$message_info]);
+    }*/
 }
