@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MessageListRequest extends FormRequest
+class MessageInfoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,7 @@ class MessageListRequest extends FormRequest
     public function rules()
     {
         return [
-            //'title'=>'required|max:40|string',
-            //'content'=>'required|string|max:255',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
+            //
         ];
     }
 }

@@ -17,11 +17,11 @@ class Users extends Model
      *
      * @var array
      */
-  /*  protected $fillable = [
+    protected $fillable = [
         'name','password','email'
-    ];*/
+    ];
 
-    private $name;
+/*    private $name;
     private $password;
-    private $email;
+    private $email;*/
 }

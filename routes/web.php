@@ -26,18 +26,18 @@ Route::group(array('prefix'=>'message'),function(){
     Route::any('/create','MessageController@create');
     //Route::any('/update/{post}','MessageController@update');
     //Route::any('/delete/{post}', 'MessageController@delete');
-    Route::any('/reply_create/{post}','ReplyController@reply_create');
-    Route::any('/reply_update/{post}','ReplyController@reply_update');
-    Route::any('/reply_delete/{post}','ReplyController@reply_delete');
-    Route::any('/list', 'MessageController@list');
+    //Route::any('/reply_create/{post}','ReplyController@reply_create');
+    //Route::any('/reply_update/{post}','ReplyController@reply_update');
+    //Route::any('/reply_delete/{post}','ReplyController@reply_delete');
+/*    Route::any('/list', 'MessageController@list');
     //Route::any('info/{post}','MessageController@info');
-    Route::any('info/{post}','ReplyController@info');
+    Route::any('info/{post}','ReplyController@info');*/
 });
 //Route::post('message/create','MessageController@create');
 Route::post('message/update/{id}','MessageController@update');
 Route::get('message/delete/{id}','MessageController@delete');
-/*Route::post('message/reply_create/{id}','MessageController@reply_create');
-Route::post('message/reply_update/{id}','MessageController@reply_update');
-Route::get('message/reply_delete/{id}','MessageController@reply_delete');*/
-//Route::get('message/list','MessageController@list');
-//Route::get('message/info/{id}','MessageController@info');
+Route::post('message/reply_create','MessageController@reply_create');
+Route::post('message/reply_update/{reply_id}/{id}','MessageController@reply_update');
+Route::post('message/reply_delete/{reply_id}/{id}','MessageController@reply_delete');
+Route::get('message/list','MessageController@list');
+Route::get('message/info/{id}','MessageController@info');

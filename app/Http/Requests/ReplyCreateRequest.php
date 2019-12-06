@@ -13,7 +13,7 @@ class ReplyCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,17 @@ class ReplyCreateRequest extends FormRequest
     {
         return [
             //
-            'reply_content'=>'required|string|max:255',
+            'content'=>'required|string|max:255',
+            'reply_id'=>'required|Integer|max:20|exists:message,id'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'content.required' => '请输入回复内容',
+            'content.max' => '回复内容过长',
+            'reply_id.required'=>'请输入回复的留言id',
+            'reply_id.exists'=>'回复的留言不存在',
         ];
     }
 }

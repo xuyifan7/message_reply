@@ -14,16 +14,13 @@ class Message extends Model
     public $primaryKey = 'id';
 
     public $fillable = [
-        'user_id','title','content','reply_name','reply_content','reply_time'
+        'user_id','title','content','reply_id'
     ];
     //外键
     public function user(){
-        return $this->belongsTo('App/User','user_id','uid');
+        return $this->belongsTo('App/Users','user_id','uid');
     }
 
-    /**
-     * @var array|string
-     */
 
 
 }
