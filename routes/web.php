@@ -20,15 +20,15 @@ Route::group(['prefix'=>'user'], function () {
     Route::post('logout', 'UserController@logout');
 });
 
-Route::group(['prefix'=>'message','middleware' => ['AdminLogin']], function () {
+Route::group(['prefix'=>'message','middleware' => ['login']], function () {
     Route::post('create','MessageController@create');
     Route::post('update/{id}','MessageController@update');
     Route::get('delete/{id}','MessageController@delete');
     Route::post('reply_create','MessageController@reply_create');
-    Route::post('reply_update/{reply_id}/{id}','MessageController@reply_update');
+    Route::post('reply_update/{id}','MessageController@reply_update');
     Route::get('reply_delete/{reply_id}/{id}','MessageController@reply_delete');
     Route::get('list','MessageController@list');
-    Route::get('info/{id}','MessageController@info');
+    Route::get('info','MessageController@info');
 });
 
 /*Route::post('message/create','MessageController@create');

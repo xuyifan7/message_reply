@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class MessageInfoRequest extends FormRequest
 {
@@ -24,7 +27,35 @@ class MessageInfoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'id'=>'required|exists:message',
         ];
+    }
+
+    public function messages()
+    {
+        return [
+            'id.required'=>'缺少留言ID|-20',
+            'id.exists'=>'留言不存在|-21',
+        ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        if(strpos($validator->getMessageBag()->first(),'|') > 0){
+            list($message, $code) = explode("|", $validator->getMessageBag()->first());
+            throw new HttpResponseException($this->fail($message,$code));
+        }else {
+            $message = $validator->getMessageBag()->first();
+            throw new HttpResponseException($message);
+        }
+    }
+
+    protected function fail($code,  $errors) : JsonResponse{
+        return response()->json(
+            [
+                'code' => $code,
+                'errors' => $errors
+            ]
+        );
     }
 }

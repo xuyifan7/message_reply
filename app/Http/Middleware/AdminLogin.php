@@ -20,7 +20,6 @@ class AdminLogin
             return $next($request);
         }else{
             return response()->json(['msg'=>'Please login！']);
-            //return redirect('user/login')->with('error','please login!');
         }
     }
 }

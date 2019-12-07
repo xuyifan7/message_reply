@@ -16,10 +16,7 @@ class UserController extends Controller
 {
 
     public function postRegister(RegisterRequest $request){
-        //dd(123);
-        //$validator = Validator::make($request->all());
         $data = $request->validated();
-        //if ($request->validated()){
         $user = new Users;
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -27,9 +24,6 @@ class UserController extends Controller
         $user->password = $data['password'];
         $user->save();
         return response()->json(['status'=>1,'msg'=>'register success！','data'=>$user]);
-        /*}else{
-            return response()->json(['msg'=>'register failed!']);
-        }*/
     }
 
     public function login(LoginRequest $request){
@@ -48,7 +42,6 @@ class UserController extends Controller
         else{
             $user_in = array('uid'=>$user_info->uid,'username'=>$user_info->name);
             $request->session()->put('user',$user_in);
-            //var_dump($request->session()->get('user'));
             return response()->json(['status'=>1,'msg'=>'login success！','data'=>$user_info]);
         }
     }
