@@ -17,10 +17,9 @@ class Message extends Model
         'user_id','title','content','reply_id'
     ];
     //外键
-    public function user(){
+/*    public function user(){
         return $this->belongsTo('App/Users','user_id','uid');
-    }
-
+    }*/
 
 
 }

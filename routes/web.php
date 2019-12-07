@@ -11,33 +11,31 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
 //Route::get('/', 'IndexController@index');
 
-//Route::post('user/one','UserController@one');
-
-Route::post('user/register', 'UserController@postregister');
-Route::post('user/login','UserController@login');
-Route::post('user/logout', 'UserController@logout');
-Route::group(array('prefix'=>'message'),function(){
-    Route::any('/create','MessageController@create');
-    //Route::any('/update/{post}','MessageController@update');
-    //Route::any('/delete/{post}', 'MessageController@delete');
-    //Route::any('/reply_create/{post}','ReplyController@reply_create');
-    //Route::any('/reply_update/{post}','ReplyController@reply_update');
-    //Route::any('/reply_delete/{post}','ReplyController@reply_delete');
-/*    Route::any('/list', 'MessageController@list');
-    //Route::any('info/{post}','MessageController@info');
-    Route::any('info/{post}','ReplyController@info');*/
+//Route::get('user/one','UserController@one');
+Route::group(['prefix'=>'user'], function () {
+    Route::post('register', 'UserController@postregister');
+    Route::post('login','UserController@login');
+    Route::post('logout', 'UserController@logout');
 });
-//Route::post('message/create','MessageController@create');
+
+Route::group(['prefix'=>'message','middleware' => ['AdminLogin']], function () {
+    Route::post('create','MessageController@create');
+    Route::post('update/{id}','MessageController@update');
+    Route::get('delete/{id}','MessageController@delete');
+    Route::post('reply_create','MessageController@reply_create');
+    Route::post('reply_update/{reply_id}/{id}','MessageController@reply_update');
+    Route::get('reply_delete/{reply_id}/{id}','MessageController@reply_delete');
+    Route::get('list','MessageController@list');
+    Route::get('info/{id}','MessageController@info');
+});
+
+/*Route::post('message/create','MessageController@create');
 Route::post('message/update/{id}','MessageController@update');
 Route::get('message/delete/{id}','MessageController@delete');
 Route::post('message/reply_create','MessageController@reply_create');
 Route::post('message/reply_update/{reply_id}/{id}','MessageController@reply_update');
-Route::post('message/reply_delete/{reply_id}/{id}','MessageController@reply_delete');
+Route::get('message/reply_delete/{reply_id}/{id}','MessageController@reply_delete');
 Route::get('message/list','MessageController@list');
-Route::get('message/info/{id}','MessageController@info');
+Route::get('message/info/{id}','MessageController@info');*/

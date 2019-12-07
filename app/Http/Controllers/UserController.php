@@ -15,11 +15,6 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
 
-//    public function _construct(){
-//        $this->beforeFilter('csrf', array('on'=>'post'));
-//    }
-
-
     public function postRegister(RegisterRequest $request){
         //dd(123);
         //$validator = Validator::make($request->all());

@@ -46,11 +46,15 @@ class MessageController extends Controller
         $user = session()->get('user');
         if ($user) {
             $message = Message::find($id);
-            $res = $message->delete();
-            if ($res) {
-                return response()->json(['status' => 1, 'msg' => 'delete message success!']);
-            } else {
-                return response()->json(['status' => 0, 'msg' => 'delete message failed!']);
+            if (!is_null($message)) {
+                $res = $message->delete();
+                if ($res) {
+                    return response()->json(['status' => 1, 'msg' => 'delete message success!']);
+                } else {
+                    return response()->json(['status' => 0, 'msg' => 'delete message failed!']);
+                }
+            }else {
+                return response()->json(['status' => 0, 'msg' => 'The message not exist!']);
             }
         }else{
             return response()->json(['msg'=>'Please login！']);
@@ -65,8 +69,8 @@ class MessageController extends Controller
             $data['user_id'] = $user['uid'];
             //$mes_id = Message::where('reply_id',0)->id;
             $reply = new Message;
-            $reply_data = $reply->craete($data);
-            $reply_data['name'] = $user['name'];
+            $reply_data = $reply->create($data);
+            //$reply_data['name'] = $user['name'];
             return response()->json(['status' => 1, 'msg' => 'create reply success！', 'data' => $reply_data]);
         }else{
             return response()->json(['msg'=>'Please login！']);
@@ -90,23 +94,30 @@ class MessageController extends Controller
         $user = session()->get('user');
         if ($user) {
             $message = Message::find($reply_id);
-            $res = $message->where('id',$id)->delete();
-            if ($res) {
-                return response()->json(['status' => 1, 'msg' => 'delete reply success!']);
-            } else {
-                return response()->json(['msg'=>'Please login！']);
+            if (!is_null($message)) {
+                $res = $message->where('id', $id)->delete();
+                if ($res) {
+                    return response()->json(['status' => 1, 'msg' => 'delete reply success!']);
+                } else {
+                    return response()->json(['status' => 0, 'msg' => 'delete reply failed!']);
+                }
+            }else {
+                return response()->json(['status' => 0, 'msg' => 'The message not exist!']);
             }
+        }else{
+            return response()->json(['msg'=>'Please login！']);
         }
     }
 
     public function list(MessageListRequest $request){
-        //dd('123');
         $data = $request->validated();
         $user = session()->get('user');
         if($user){
             //$name = DB::table('message')->join('user', 'message.user_id', '=', 'user.uid')->select('user.name')->where('message.user_id',$user['uid']);
             $mes = Message::where('reply_id',0)->orderBy('created_at')->paginate(5);
-            //var_dump($mes);
+            $mes_list = $mes->toArray();
+            //$mes_list['data']['name'] = ;
+            //var_dump($mes->toArray());
             $data['mes'] = $mes;
             //$data['reply_count'] = DB::table('message')->where('reply_id','<>',0)->groupBy('reply_id')->count();
             return response()->json(['status'=>1,'msg'=>'Messages list','data'=>$mes]);
@@ -115,8 +126,9 @@ class MessageController extends Controller
         }
     }
 
-   public function info(MessageInfoRequest $request, $id){
-       $data = $request->validated();
+   //public function info(MessageInfoRequest $request, $id){
+    public function info($id){
+       //$data = $request->validated();
        $user = session()->get('user');
        if($user){
            $message_info = Message::where('id', $id)->orWhere('reply_id',$id)->orderBy('created_at','desc')->paginate(5);

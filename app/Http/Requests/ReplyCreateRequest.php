@@ -24,18 +24,17 @@ class ReplyCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
             'content'=>'required|string|max:255',
-            'reply_id'=>'required|Integer|max:20|exists:message,id'
+            'reply_id'=>'required|max:20|exists:message,id'
         ];
     }
     public function messages()
     {
-        return [
-            'content.required' => '请输入回复内容',
+       return [
+            /*'content.required' => '请输入回复内容',
             'content.max' => '回复内容过长',
             'reply_id.required'=>'请输入回复的留言id',
-            'reply_id.exists'=>'回复的留言不存在',
+            'reply_id.exists'=>'回复的留言不存在',*/
         ];
     }
 }
