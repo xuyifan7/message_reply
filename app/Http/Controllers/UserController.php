@@ -20,8 +20,7 @@ class UserController extends Controller
         $user = new Users;
         $user->name = $data['name'];
         $user->email = $data['email'];
-        //$user->password = Hash::make($data['password']);
-        $user->password = $data['password'];
+        $user->password = Hash::make($data['password']);
         $user->save();
         return response()->json(['status'=>1,'msg'=>'register success！','data'=>$user]);
     }
@@ -30,13 +29,12 @@ class UserController extends Controller
         $data = $request->validated();
         $user = array();
         $user['name'] = $data['name'];
-        //$user['password'] = Hash::make($data['password']);
-        $user['password'] = $data['password'];
+        $user['password'] = Hash::make($data['password']);
         $user_info = DB::table('user')->where('name',$user['name'])->first();
         if (!$user_info){
             return response()->json(['msg'=>'用户名不存在!']);
         }
-        if ($user['password'] != $user_info->password){
+        if (!Hash::check($user_info->password,$user['password'])){
             return response()->json(['msg'=>'密码有误，请重新输入!']);
         }
         else{

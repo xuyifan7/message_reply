@@ -13,14 +13,14 @@
 
 //Route::get('/', 'IndexController@index');
 
-//Route::get('user/one','UserController@one');
-Route::group(['prefix'=>'user'], function () {
+//Route::group(['domain' => config('my.message.com')], function(){
+    Route::group(['prefix'=>'user'], function () {
     Route::post('register', 'UserController@postregister');
     Route::post('login','UserController@login');
     Route::post('logout', 'UserController@logout');
-});
+    });
 
-Route::group(['prefix'=>'message','middleware' => ['login']], function () {
+    Route::group(['prefix'=>'message','middleware' => ['login']], function () {
     Route::post('create','MessageController@create');
     Route::post('update/{id}','MessageController@update');
     Route::get('delete/{id}','MessageController@delete');
@@ -29,7 +29,8 @@ Route::group(['prefix'=>'message','middleware' => ['login']], function () {
     Route::get('reply_delete/{reply_id}/{id}','MessageController@reply_delete');
     Route::get('list','MessageController@list');
     Route::get('info','MessageController@info');
-});
+    });
+//});
 
 /*Route::post('message/create','MessageController@create');
 Route::post('message/update/{id}','MessageController@update');
