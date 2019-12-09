@@ -31,12 +31,3 @@
     Route::get('info','MessageController@info');
     });
 //});
-
-/*Route::post('message/create','MessageController@create');
-Route::post('message/update/{id}','MessageController@update');
-Route::get('message/delete/{id}','MessageController@delete');
-Route::post('message/reply_create','MessageController@reply_create');
-Route::post('message/reply_update/{reply_id}/{id}','MessageController@reply_update');
-Route::get('message/reply_delete/{reply_id}/{id}','MessageController@reply_delete');
-Route::get('message/list','MessageController@list');
-Route::get('message/info/{id}','MessageController@info');*/
