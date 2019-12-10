@@ -8,11 +8,7 @@ use App\Http\Requests\MessageUpdateRequest;
 use App\Http\Requests\ReplyCreateRequest;
 use App\Http\Requests\ReplyUpdateRequest;
 use App\Message;
-use http\Env\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Http\Request;
-use App\Http\Requests\MessageListRequest;
-use Illuminate\Support\Facades\DB;
 
 class MessageController extends Controller
 {

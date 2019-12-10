@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
+
     protected $table = 'message';
 
     public $primaryKey = 'id';
@@ -13,10 +14,6 @@ class Message extends Model
     public $fillable = [
         'user_id','title','content','reply_id'
     ];
-    //外键
-/*    public function user(){
-        return $this->belongsTo('App/Users','user_id','uid');
-    }*/
 
     public function message_create(array $request){
         $user = session()->get('user');

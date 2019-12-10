@@ -16,10 +16,10 @@ class AdminLogin
      */
     public function handle($request, Closure $next)
     {
-        if (session()->get('user')){
-            return $next($request);
-        }else{
+        if (!session()->get('user')){
             return response()->json(['msg'=>'Please login！']);
         }
+
+        return $next($request);
     }
 }

@@ -2,14 +2,7 @@
 
 namespace App\Http\Requests;
 
-use http\Env\Response;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
-
-class RegisterRequest extends FormRequest
+class RegisterRequest extends YyfRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -51,23 +44,24 @@ class RegisterRequest extends FormRequest
         ] ;
     }
 
-    protected function failedValidation(Validator $validator)
+/*    protected function failedValidation(Validator $validator)
     {
         if(strpos($validator->getMessageBag()->first(),'|') > 0){
             list($message, $code) = explode("|", $validator->getMessageBag()->first());
-            throw new HttpResponseException($this->fail($message,$code));
+            throw new HttpResponseException(response()->json(['code' => $code, 'errors' => $message]));
+            //throw new HttpResponseException($this->fail($message,$code));
         }else {
             $message = $validator->getMessageBag()->first();
             throw new HttpResponseException($message);
         }
-    }
+    }*/
 
-    protected function fail($code,  $errors) : JsonResponse{
+/*    protected function fail($code,  $errors) : JsonResponse{
         return response()->json(
             [
                 'code' => $code,
                 'errors' => $errors
             ]
         );
-    }
+    }*/
 }

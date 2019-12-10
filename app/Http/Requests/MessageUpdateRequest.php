@@ -2,12 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
-
-class MessageUpdateRequest extends FormRequest
+class MessageUpdateRequest extends YyfRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -42,7 +37,7 @@ class MessageUpdateRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+/*    protected function failedValidation(Validator $validator)
     {
         if(strpos($validator->getMessageBag()->first(),'|') > 0){
             list($message, $code) = explode("|", $validator->getMessageBag()->first());
@@ -60,5 +55,5 @@ class MessageUpdateRequest extends FormRequest
                 'errors' => $errors
             ]
         );
-    }
+    }*/
 }
