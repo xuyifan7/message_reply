@@ -12,8 +12,13 @@ class Message extends Model
     public $primaryKey = 'id';
 
     public $fillable = [
-        'user_id','title','content','reply_id'
+        'user_id','title','content'
     ];
+
+    public function replies(){
+        return $this->hasMany('App\Reply');
+    }
+
 
     public function message_create(array $request){
         $user = session()->get('user');
@@ -44,49 +49,15 @@ class Message extends Model
                     $result['status'] = 1;
                     $result['msg'] = "delete message success!";
                 } else {
-                    $result['msg'] = "delete message failed1!";
+                    $result['msg'] = "delete message failed!";
                 }
             }else{
                 if ($res) {
                     $result['status'] = 1;
                     $result['msg'] = "delete message success!";
                 }else{
-                    $result['msg'] = "delete message failed2!";
+                    $result['msg'] = "delete message failed!";
                 }
-            }
-        }else {
-            $result['msg'] = "The message not exist!";
-        }
-        return $result;
-    }
-
-    public function reply_create(array $request){
-        $user = session()->get('user');
-        $request['user_id'] = $user['uid'];
-        $reply = new Message;
-        $reply_data = $reply->create($request);
-        return $reply_data;
-    }
-
-    public function reply_update(array $request, int $id){
-        $reply = Message::find($request['reply_id']);
-        $user = session()->get('user');
-        $request['user_id'] = $user['uid'];
-        $reply_up = $reply->where('id',$id)->update($request);
-        return $reply_up;
-    }
-
-    public function reply_delete($reply_id, $id){
-        $message = Message::find($reply_id);
-        $result =array();
-        $result['status'] = 0;
-        if (!is_null($message)) {
-            $res = $message->where('id', $id)->delete();
-            if ($res) {
-                $result['status'] = 1;
-                $result['msg'] = "delete reply success!";
-            } else {
-                $result['msg'] = "delete reply failed!";
             }
         }else {
             $result['msg'] = "The message not exist!";
@@ -106,7 +77,11 @@ class Message extends Model
 
     public function show_info(array $request){
         $user = session()->get('user');
-        $message_info['message'] = Message::where('id', $request['id'])->orWhere('reply_id',$request['id'])->orderBy('created_at','desc')->paginate(5);
+        $message_info['message'] = Message::where('id', $request['id'])->With(['replies'=>function($values){
+            return $values->paginate(5);
+        }])->orderBy('created_at','desc')->paginate(5);
+        $message = Message::find($request['id']);
+//        $message_info['message']['reply'] = $message->replies()->orderBy('created_at','desc')->paginate(5);
         $message_info['username'] = $user['username'];
         return $message_info;
     }

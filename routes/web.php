@@ -13,7 +13,7 @@
 
 //Route::get('/', 'IndexController@index');
 
-Route::group(['domain' => config('www.message.com')], function () {
+Route::group(['domain' => config('www.message.reply.com')], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::post('register', 'UserController@postregister');
         Route::post('login', 'UserController@login');
@@ -24,10 +24,11 @@ Route::group(['domain' => config('www.message.com')], function () {
         Route::post('create', 'MessageController@create');
         Route::post('update/{id}', 'MessageController@update');
         Route::post('delete/{id}', 'MessageController@delete');
-        Route::post('reply_create', 'MessageController@reply_create');
-        Route::post('reply_update/{id}', 'MessageController@reply_update');
-        Route::post('reply_delete/{reply_id}/{id}', 'MessageController@reply_delete');
+        Route::post('reply_create', 'ReplyController@reply_create');
+        Route::post('reply_update/{rid}', 'ReplyController@reply_update');
+        Route::post('reply_delete/{rid}', 'ReplyController@reply_delete');
         Route::get('list', 'MessageController@list');
         Route::get('info', 'MessageController@info');
     });
 });
+

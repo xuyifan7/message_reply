@@ -22,37 +22,21 @@ class ReplyCreateRequest extends YyfRequest
     public function rules()
     {
         return [
-            'content'=>'required|string|max:255',
-            'reply_id'=>'required|max:20|exists:message,id'
+            'message_id'=>'required|exists:message,id',
+            'reply_content'=>'required|string|max:255',
+            'reply_id'=>'nullable|max:20|exists:reply,rid'
         ];
     }
     public function messages()
     {
        return [
-            'content.required' => '请输入回复内容|-3',
-            'content.max' => '回复内容过长|-4',
-            'reply_id.required'=>'请输入回复的留言id|-5',
-            'reply_id.exists'=>'回复的留言不存在|-6',
+           'message_id.required' => '请输入回复的留言ID|-3',
+           'message_id.exists' => '回复的留言ID不存在|-3',
+           'reply_content.required' => '请输入回复内容|-3',
+           'reply_content.max' => '回复内容过长|-4',
+           'reply_id.required'=>'请输入回复的留言id|-5',
+           'reply_id.exists'=>'回复的留言不存在|-6',
         ];
     }
 
-/*    protected function failedValidation(Validator $validator)
-    {
-        if(strpos($validator->getMessageBag()->first(),'|') > 0){
-            list($message, $code) = explode("|", $validator->getMessageBag()->first());
-            throw new HttpResponseException($this->fail($message,$code));
-        }else {
-            $message = $validator->getMessageBag()->first();
-            throw new HttpResponseException($message);
-        }
-    }
-
-    protected function fail($code,  $errors) : JsonResponse{
-        return response()->json(
-            [
-                'code' => $code,
-                'errors' => $errors
-            ]
-        );
-    }*/
 }

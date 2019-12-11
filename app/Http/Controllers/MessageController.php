@@ -13,85 +13,24 @@ use Illuminate\Routing\Controller;
 class MessageController extends Controller
 {
 
+    public function replies(){
+        return $this->hasMany('App\Reply');
+    }
+
     public function create(MessageCreateRequest $request){
         $data = $request->validated();
         $result = app(Message::class)->message_create($data);
-        /*$user = session()->get('user');
-        $data['user_id'] = $user['uid'];
-        $message = new Message;
-        $mes_data = $message->create($data);*/
         return response()->json(['status'=>1,'msg'=>'create message success！','data'=>$result]);
     }
 
     public function update(MessageUpdateRequest $request, $id){
         $data = $request->validated();
         $result = app(Message::class)->message_update($data, $id);
-        /*$message = Message::find($id);
-        $user = session()->get('user');
-        $data['user_id'] = $user['uid'];
-        $mes_up = $message->update($data);*/
         return response()->json(['status' => 1, 'msg' => 'update message success！', 'data' => $result]);
     }
 
     public function delete($id){
         $result = app(Message::class)->message_delete($id);
-        /*$message = Message::find($id);
-        if (!is_null($message)) {
-            $res = $message->delete();
-            $reply = Message::where('reply_id',$id);
-            if(!is_null($reply)){
-                $r_res = $reply->delete();
-                if ($res && $r_res) {
-                    return response()->json(['status' => 1, 'msg' => 'delete message success!']);
-                } else {
-                    return response()->json(['status' => 0, 'msg' => 'delete message failed!']);
-                }
-            }else{
-                if ($res) {
-                    return response()->json(['status' => 1, 'msg' => 'delete message success!']);
-                }else{
-                    return response()->json(['status' => 0, 'msg' => 'delete message failed!']);
-                }
-            }
-        }else {
-            return response()->json(['status' => 0, 'msg' => 'The message not exist!']);
-        }*/
-        return response()->json(['status' => $result['status'], 'msg' => $result['msg']]);
-    }
-
-    public function reply_create(ReplyCreateRequest $request){
-        $data = $request->validated();
-        $result = app(Message::class)->reply_create($data);
-        /*$user = session()->get('user');
-        $data['user_id'] = $user['uid'];
-        $reply = new Message;
-        $reply_data = $reply->create($data);*/
-        return response()->json(['status' => 1, 'msg' => 'create reply success！', 'data' => $result]);
-    }
-
-    public function reply_update(ReplyUpdateRequest $request, $id){
-        $data = $request->validated();
-        $result = app(Message::class)->reply_update($data, $id);
-        /*$reply = Message::find($data['reply_id']);
-        $user = session()->get('user');
-        $data['user_id'] = $user['uid'];
-        $reply_up = $reply->where('id',$id)->update($data);*/
-        return response()->json(['status' => 1, 'msg' => 'update reply success！', 'data' => $result]);
-    }
-
-    public function reply_delete($reply_id, $id){
-        $result = app(Message::class)->reply_delete($reply_id, $id);
-        /*$message = Message::find($reply_id);
-        if (!is_null($message)) {
-            $res = $message->where('id', $id)->delete();
-            if ($res) {
-                return response()->json(['status' => 1, 'msg' => 'delete reply success!']);
-            } else {
-                return response()->json(['status' => 0, 'msg' => 'delete reply failed!']);
-            }
-        }else {
-            return response()->json(['status' => 0, 'msg' => 'The message not exist!']);
-        }*/
         return response()->json(['status' => $result['status'], 'msg' => $result['msg']]);
     }
 
