@@ -66,20 +66,29 @@ class MessageModel extends Model
     public function show_list()
     {
         $message = $this->orderBy('created_at', 'asc')->get();
-        /*$id = $this->pluck('id');
-        $replies = ReplyModel::whereIn('message_id', $id);*/
-        //$reply_count = ReplyModel::select(DB::raw('count(*) as value'))->where('reply_id', 0)->groupBy('message_id')->get();
-        //$message['count'] = $reply_count;
+
+        $message_ids = collect($message)->pluck('id')->toArray();
+        $user_ids = collect($message)->pluck('user_id')->unique()->toArray();
+        $result = ReplyModel::select(DB::raw('message_id, count(*) as value'))->where('reply_id', 0)->whereIn('message_id', $message_ids)->groupBy('message_id')->get()->toArray();
+        $result = collect($result)->pluck('message_id', 'value')->toArray();
+        //dd($result);
+
+        $user = UsersModel::whereIn('uid', $user_ids)->get()->toArray();
+        $user = collect($user)->pluck('uid','name')->toArray();
+        //dd($user);
+
         foreach ($message as $k => $v) {
             $v['count'] = 0;
-            //echo $v['id']."\t";
-            $reply_count = ReplyModel::select(DB::raw('count(*) as value'))->where('reply_id', 0)->groupBy('message_id');
-            $count = $reply_count->where('message_id', $v['id'])->pluck('value');
-            //dd(gettype($count));
-            if(count($count)>0){
-                $v['count'] = $count;
+            foreach ($result as $count => $mes){
+                if($v['id'] == $mes){
+                    $v['count'] = $count;
+                }
             }
-            $v['name'] = UsersModel::where('uid', $v['user_id'])->pluck('name');
+            foreach ($user as $name => $users){
+                if($v['user_id'] == $users){
+                    $v['name'] = $name;
+                }
+            }
         }
         return $message;
     }
