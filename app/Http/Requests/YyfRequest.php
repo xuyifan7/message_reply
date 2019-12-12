@@ -20,12 +20,18 @@ class YyfRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        if(strpos($validator->getMessageBag()->first(),'|') > 0){
+        if (strpos($validator->getMessageBag()->first(), '|') > 0) {
             list($message, $code) = explode("|", $validator->getMessageBag()->first());
             throw new HttpResponseException(response()->json(['code' => $code, 'errors' => $message]));
-        }else {
+        } else {
             $message = $validator->getMessageBag()->first();
             throw new HttpResponseException($message);
         }
     }
+
+/*    protected function user(){
+        //$user = session()->get('user');
+        //return $user;
+        echo 111;
+    }*/
 }

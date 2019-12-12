@@ -10,14 +10,14 @@ class AdminLogin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (!session()->get('user')){
-            return response()->json(['msg'=>'Please login！']);
+        if (!session()->get('user')) {
+            return response()->json(['msg' => 'Please login！']);
         }
 
         return $next($request);

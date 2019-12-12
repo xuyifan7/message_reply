@@ -22,7 +22,6 @@ class MessageCreateRequest extends YyfRequest
     public function rules()
     {
         return [
-            //
             'title'=>'required|max:40|string',
             'content'=>'required|string|max:255',
         ];

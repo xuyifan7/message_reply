@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Reply extends Model
+class ReplyModel extends Model
 {
     protected $table = 'reply';
 
@@ -16,31 +16,27 @@ class Reply extends Model
 
     public function message()
     {
-        return $this->belongsTo('App\Message');
+        return $this->belongsTo('App\MessageModel');
     }
 
     public function reply_create(array $request)
     {
-        $user = session()->get('user');
-        $request['user_id'] = $user['uid'];
-        $reply = new Reply;
+        $reply = new ReplyModel;
         $reply_data = $reply->create($request);
         return $reply_data;
     }
 
     public function reply_update(array $request, int $rid)
     {
-        $reply = Reply::find($rid);
-        $user = session()->get('user');
-        $request['user_id'] = $user['uid'];
+        $reply = ReplyModel::find($rid);
         $reply_up = $reply->update($request);
         return $reply_up;
     }
 
     public function reply_delete($rid)
     {
-        $reply = Reply::find($rid);
-        $replies = Reply::where('reply_id',$rid);
+        $reply = ReplyModel::find($rid);
+        $replies = ReplyModel::where('reply_id',$rid);
         $result = array();
         $result['status'] = 0;
         if (!is_null($reply)) {

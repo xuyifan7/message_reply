@@ -24,7 +24,7 @@ class ReplyCreateRequest extends YyfRequest
         return [
             'message_id'=>'required|exists:message,id',
             'reply_content'=>'required|string|max:255',
-            'reply_id'=>'nullable|max:20|exists:reply,rid'
+            'reply_id'=>'sometimes|max:20|exists:reply,rid'
         ];
     }
     public function messages()

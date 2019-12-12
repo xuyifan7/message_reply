@@ -13,14 +13,17 @@
 
 //Route::get('/', 'IndexController@index');
 
-Route::group(['domain' => config('www.message.reply.com')], function () {
-    Route::group(['prefix' => 'user'], function () {
+Route::group(['domain' => config('www.message.reply.com')], function ()
+{
+    Route::group(['prefix' => 'user'], function ()
+    {
         Route::post('register', 'UserController@postregister');
         Route::post('login', 'UserController@login');
         Route::post('logout', 'UserController@logout');
     });
 
-    Route::group(['prefix' => 'message', 'middleware' => ['login']], function () {
+    Route::group(['prefix' => 'message', 'middleware' => ['login']], function ()
+    {
         Route::post('create', 'MessageController@create');
         Route::post('update/{id}', 'MessageController@update');
         Route::post('delete/{id}', 'MessageController@delete');

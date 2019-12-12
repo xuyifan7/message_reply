@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
-class Users extends Model
+class UsersModel extends Model
 {
     //public $timestamps = false;
 
@@ -18,11 +18,12 @@ class Users extends Model
      * @var array
      */
     protected $fillable = [
-        'name','password','email'
+        'name', 'password', 'email'
     ];
 
-    public function register(array $request){
-        $user = new Users;
+    public function register(array $request)
+    {
+        $user = new UsersModel;
         $user->name = $request['name'];
         $user->email = $request['email'];
         $user->password = Hash::make($request['password']);
@@ -30,16 +31,18 @@ class Users extends Model
         return $user->toArray();
     }
 
-    public function login(array $request){
+    public function login(array $request)
+    {
         $user = array();
         $user['name'] = $request['name'];
         $user['password'] = Hash::make($request['password']);
-        $user_info = Users::where('name',$user['name'])->first();
+        $user_info = UsersModel::where('name', $user['name'])->first();
         return $user_info;
     }
 
-    public function logout($request){
-        if ($request->session()->has('user')){
+    public function logout($request)
+    {
+        if ($request->session()->has('user')) {
             $request->session()->forget('user');
         }
     }
