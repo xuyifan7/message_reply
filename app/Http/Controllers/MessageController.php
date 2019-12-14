@@ -52,8 +52,6 @@ class MessageController extends Controller
 
     public function replyList($data, $reply_id)
     {
-        /*$reply = ReplyModel::where('message_id', $mid)->oldest()->paginate(5);
-        $reply_info = collect($reply)->toArray();*/
         $re = array();
         foreach ($data as $k => $v) {
             //$v['reply_id'] = &$data;
@@ -67,18 +65,6 @@ class MessageController extends Controller
             }
         }
         return $re;
-
-        /*$reply_ids = ReplyModel::where('message_id', $mid)->where('reply_id','<>',0)->pluck('reply_id');
-        //dd($reply_ids);
-        foreach ($reply_ids as $k => $v) {
-            $this->replyList($mid, $v);
-        }*/
-
-        /*$rids = collect($replies)->pluck('rid')->toArray();
-        $combined = collect($rids)->combine($replies);
-        $group = $combined->groupBy('reply_id');*/
-        /*$replies_group = ReplyModel::select(DB::raw('reply_id, count(*) as count'))->where('message_id', $request['id'])->where('reply_id', '<>', 0)->groupBy('reply_id')->get()->toArray();
-        //$replies_group = collect($replies_group)->pluck('count', 'reply_id')->toArray();*/
     }
 
 

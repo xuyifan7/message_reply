@@ -101,36 +101,6 @@ class MessageModel extends Model
         /*$reply = collect($data)->keyBy('rid')->get();
         $replies = app(MessageController::class)->replyList($reply, 0);*/
         $replies = app(MessageController::class)->replyList($data, 0);
-
-        /*$reply_ids = ReplyModel::where('message_id', $request['id'])->where('reply_id', '<>', 0)->pluck('reply_id');
-        $replies_key_id = collect($replies)->keyBy('rid')->toArray();*/
-
-        /*$r_replies = ReplyModel::where('message_id', $request['id'])->where('reply_id', '<>', 0);
-        $rids = ReplyModel::where('message_id', $request['id'])->where('reply_id', '<>', 0)->pluck('rid')->toArray();
-        $combined = collect($rids)->combine($r_replies);*/
-
-        /*foreach ($replies_key_id as $k => &$v) {
-            foreach ($reply_ids as $k_id => $v_id) {
-                $reply = app(MessageController::class)->replyList($request['id'], $v_id)->toArray();
-//                dd($reply);
-                echo $k."=>".$v_id."\t";
-                if ($k == $v_id) {
-                    $v['replies'] = $reply;
-                }
-            }
-        }*/
-        /*$message_replies = collect($replies)->where('reply_id', 0);
-        //message's reply
-        $message_replies = collect($replies)->where('reply_id', 0);
-        //dd($message_replies);
-
-        //if reply's reply exist
-        $message_replies_ids = $message_replies->pluck('rid');
-        $rr = collect($replies)->whereIn('reply_id', $message_replies_ids);
-        if($rr){
-            $r_ids = $rr->pluck('reply_id');
-        }
-        //dd($rr->toArray());*/
         foreach ($message_info['message'] as $k => $value) {
             $value['name'] = $user;
             $value['replies'] = $replies;
