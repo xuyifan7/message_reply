@@ -17,7 +17,7 @@ Route::group(['domain' => config('www.message.reply.com')], function ()
 {
     Route::group(['prefix' => 'user'], function ()
     {
-        Route::post('register', 'UserController@postregister');
+        Route::post('register', 'UserController@postRegister');
         Route::post('login', 'UserController@login');
         Route::post('logout', 'UserController@logout');
     });
@@ -27,9 +27,9 @@ Route::group(['domain' => config('www.message.reply.com')], function ()
         Route::post('create', 'MessageController@create');
         Route::post('update/{id}', 'MessageController@update');
         Route::post('delete/{id}', 'MessageController@delete');
-        Route::post('reply_create', 'ReplyController@reply_create');
-        Route::post('reply_update/{rid}', 'ReplyController@reply_update');
-        Route::post('reply_delete/{rid}', 'ReplyController@reply_delete');
+        Route::post('reply_create', 'ReplyController@replyCreate');
+        Route::post('reply_update/{rid}', 'ReplyController@replyUpdate');
+        Route::post('reply_delete/{rid}', 'ReplyController@replyDelete');
         Route::get('list', 'MessageController@list');
         Route::get('info', 'MessageController@info');
     });

@@ -8,27 +8,27 @@ use App\ReplyModel;
 
 class ReplyController extends Controller
 {
-    public function reply_create(ReplyCreateRequest $request)
+    public function replyCreate(ReplyCreateRequest $request)
     {
         $data = $request->validated();
-        $user = session()->get('user');
+        $user = session('user');
         $data['user_id'] = $user['uid'];
-        $result = app(ReplyModel::class)->reply_create($data);
+        $result = app(ReplyModel::class)->replyCreate($data);
         return response()->json(['status' => 1, 'msg' => 'create reply success！', 'data' => $result]);
     }
 
-    public function reply_update(ReplyUpdateRequest $request, $rid)
+    public function replyUpdate(ReplyUpdateRequest $request, $rid)
     {
         $data = $request->validated();
-        $user = session()->get('user');
+        $user = session('user');
         $data['user_id'] = $user['uid'];
-        $result = app(ReplyModel::class)->reply_update($data, $rid);
+        $result = app(ReplyModel::class)->replyUpdate($data, $rid);
         return response()->json(['status' => 1, 'msg' => 'update reply success！', 'data' => $result]);
     }
 
-    public function reply_delete($rid)
+    public function replyDelete($rid)
     {
-        $result = app(ReplyModel::class)->reply_delete($rid);
+        $result = app(ReplyModel::class)->replyDelete($rid);
         return response()->json(['status' => $result['status'], 'msg' => $result['msg']]);
     }
 

@@ -14,26 +14,26 @@ class ReplyModel extends Model
         'user_id', 'message_id', 'reply_content', 'reply_id'
     ];
 
-    public function message()
+/*    public function message()
     {
         return $this->belongsTo('App\MessageModel');
-    }
+    }*/
 
-    public function reply_create(array $request)
+    public function replyCreate(array $request)
     {
         $reply = new ReplyModel;
         $reply_data = $reply->create($request);
         return $reply_data;
     }
 
-    public function reply_update(array $request, int $rid)
+    public function replyUpdate(array $request, int $rid)
     {
         $reply = ReplyModel::find($rid);
         $reply_up = $reply->update($request);
         return $reply_up;
     }
 
-    public function reply_delete($rid)
+    public function replyDelete($rid)
     {
         $reply = ReplyModel::find($rid);
         $replies = ReplyModel::where('reply_id',$rid);

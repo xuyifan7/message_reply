@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Controllers\MessageController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\DB;
@@ -29,21 +30,21 @@ class MessageModel extends Model
             return $this->hasMany('App\ReplyModel','message_id');
         }*/
 
-    public function message_create(array $request)
+    public function messageCreate(array $request)
     {
         $message = new MessageModel;
         $mes_data = $message->create($request);
         return $mes_data;
     }
 
-    public function message_update(array $request, int $id)
+    public function messageUpdate(array $request, int $id)
     {
         $message = MessageModel::find($id);
         $mes_up = $message->update($request);
         return $mes_up;
     }
 
-    public function message_delete(int $id)
+    public function messageDelete(int $id)
     {
         $message = MessageModel::find($id);
         $result = array();
@@ -62,16 +63,18 @@ class MessageModel extends Model
         return $result;
     }
 
-    public function show_list()
+    public function showList()
     {
-        $message = $this->orderBy('created_at', 'asc')->paginate(5);
-        $messages = $this->orderBy('created_at', 'asc')->get();
+        /*$message = $this->orderBy('created_at', 'desc')->paginate(5);
+        $messages = $this->orderBy('created_at', 'desc')->get();*/
+        $message = $this->latest()->paginate(5);
+        $messages = $this->latest()->get();
         $message_ids = collect($messages)->pluck('id')->toArray();
         $user_ids = collect($messages)->pluck('user_id')->unique()->toArray();
         $result = ReplyModel::select(DB::raw('message_id, count(*) as value'))->where('reply_id', 0)->whereIn('message_id', $message_ids)->groupBy('message_id')->get()->toArray();
         $result = collect($result)->pluck('message_id', 'value')->toArray();
         //dd($result);
-        $user = UsersModel::whereIn('uid', $user_ids)->get()->toArray();
+        $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
         $user = collect($user)->pluck('uid', 'name')->toArray();
         //dd($user);
         foreach ($message as $k => $v) {
@@ -90,24 +93,34 @@ class MessageModel extends Model
         return $message;
     }
 
-    public function show_info(array $request)
+    public function showInfo(array $request)
     {
         $message_info['message'] = $this->where('id', $request['id'])->get();
-        $user = UsersModel::find($this->find($request['id'])->user_id)->name;
-        $reply = ReplyModel::where('message_id', $request['id'])->orderBy('created_at', 'asc')->paginate(5);
-        $replies = ReplyModel::where('message_id', $request['id'])->orderBy('created_at', 'asc')->get();
-        $reply_info = collect($reply)->toArray();
-        //dd($replies->toArray());
+        $user = UserModel::find($this->find($request['id'])->user_id)->name;
+        $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
+        /*$reply = collect($data)->keyBy('rid')->get();
+        $replies = app(MessageController::class)->replyList($reply, 0);*/
+        $replies = app(MessageController::class)->replyList($data, 0);
 
-        $replies_group = ReplyModel::select(DB::raw('reply_id, count(*) as count'))->where('message_id', $request['id'])->where('reply_id', '<>', 0)->groupBy('reply_id')->get()->toArray();
-        $groups = count($replies_group);
-        $replies_group = collect($replies_group)->pluck('count', 'reply_id')->toArray();
+        /*$reply_ids = ReplyModel::where('message_id', $request['id'])->where('reply_id', '<>', 0)->pluck('reply_id');
+        $replies_key_id = collect($replies)->keyBy('rid')->toArray();*/
 
-        //dd($replies_group);
+        /*$r_replies = ReplyModel::where('message_id', $request['id'])->where('reply_id', '<>', 0);
+        $rids = ReplyModel::where('message_id', $request['id'])->where('reply_id', '<>', 0)->pluck('rid')->toArray();
+        $combined = collect($rids)->combine($r_replies);*/
 
-        $message_replies = collect($replies)->where('reply_id', 0);
-
-        /*//message's reply
+        /*foreach ($replies_key_id as $k => &$v) {
+            foreach ($reply_ids as $k_id => $v_id) {
+                $reply = app(MessageController::class)->replyList($request['id'], $v_id)->toArray();
+//                dd($reply);
+                echo $k."=>".$v_id."\t";
+                if ($k == $v_id) {
+                    $v['replies'] = $reply;
+                }
+            }
+        }*/
+        /*$message_replies = collect($replies)->where('reply_id', 0);
+        //message's reply
         $message_replies = collect($replies)->where('reply_id', 0);
         //dd($message_replies);
 
@@ -118,29 +131,11 @@ class MessageModel extends Model
             $r_ids = $rr->pluck('reply_id');
         }
         //dd($rr->toArray());*/
-
-        foreach ($message_info['message'] as $k => $v) {
-            $v['name'] = $user;
-            //$v['replies'] = $reply_info;
-            $v['replies'] = $message_replies->toArray();
-            $r = $message_replies->where('rid', 26)->toArray();
-            //dd($r);
-            foreach ($r as $k => $v){
-                echo $v['reply_content'];
-                $v['replies'] = 1;
-            }
-            /*foreach ($replies_group as $rid => $count){
-                $message_replies->find($rid);
-            }*/
+        foreach ($message_info['message'] as $k => $value) {
+            $value['name'] = $user;
+            $value['replies'] = $replies;
         }
-
-        /*$replies = ReplyModel::where('message_id', $request['id']);
-        $message_info['replies'] = $replies->orderBy('created_at', 'asc')->paginate(5);
-        foreach ($replies as $reply) {
-            if ($reply['reply_id'] == 0) {
-                $rid = $reply['rid'];
-            }
-        }*/
         return $message_info;
     }
+
 }
