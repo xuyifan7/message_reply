@@ -95,7 +95,7 @@ class MessageModel extends Model
 
     public function showInfo(array $request)
     {
-        $message_info['message'] = $this->where('id', $request['id'])->get();
+        $message_info['message'] = $this->where('id', $request['id'])->paginate(5);
         $user = UserModel::find($this->find($request['id'])->user_id)->name;
         $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
         /*$reply = collect($data)->keyBy('rid')->get();
