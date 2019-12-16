@@ -78,10 +78,10 @@ class MessageController extends Controller
         return response()->json(['status' => 1, 'msg' => 'one message info', 'data' => $result]);
     }
 
-    public function openAllInfo(OpenAllInfoRequest $request, $rid)
+    public function openAllInfo(OpenAllInfoRequest $request)
     {
         $data = $request->validated();
-        $result = app(MessageModel::class)->openAll($data, $rid);
+        $result = app(MessageModel::class)->openAll($data, $data['rid']);
         return response()->json(['status' => 1, 'msg' => 'open all info for one reply', 'data' => $result]);
     }
 
