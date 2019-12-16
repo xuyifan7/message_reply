@@ -93,6 +93,7 @@ class MessageModel extends Model
         return $message;
     }
 
+    //show one message's all replies and paginate
     public function showInfo(array $request, $current_url)
     {
         $message_info['message'] = $this->where('id', $request['id'])->get();
@@ -119,7 +120,7 @@ class MessageModel extends Model
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $collection = collect($rs);
         $perPage = 1;
-        $currentPageSearchResults = $collection->slice(($currentPage * $perPage)-$perPage, $perPage)->all();
+        $currentPageSearchResults = $collection->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
         $paginatedSearchResults = new LengthAwarePaginator($currentPageSearchResults, count($collection), $perPage);
         $paginatedSearchResults->setPath($current_url);
         $replies = $paginatedSearchResults;
@@ -129,6 +130,64 @@ class MessageModel extends Model
             $value['replies'] = $replies;
         }
         return $message_info;
+    }
+
+
+    //show one message and one reply , open to show all replies
+    public function showOneInfo(array $request)
+    {
+        $message_info['message'] = $this->where('id', $request['id'])->get();
+        $user = UserModel::find($this->find($request['id'])->user_id)->name;
+        $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
+        $group = ReplyModel::select(DB::raw('reply_id, count(*) as count'))->where('message_id', $request['id'])->where('reply_id', '<>', 0)->groupBy('reply_id')->get();
+        $count = collect($group)->pluck('count', 'reply_id');
+        //dd(collect($data)->keyBy('rid')->toArray());
+
+        $rs = array();
+        foreach ($data as $k => $v) {
+            if ($v['reply_id'] == 0) {
+                array_push($rs, $v);
+                $v['count'] = 0;
+                foreach ($count as $rid => $cou) {
+                    //echo $v['rid']."\t";
+                    if ($v['rid'] == $rid) {
+                        $v['count'] = $cou;
+                        //$v['open_all'] = $this->openAll($v['rid']);
+                    }
+                }
+            }
+        }
+
+        foreach ($message_info['message'] as $k => $value) {
+            $value['name'] = $user;
+            $value['replies'] = $rs;
+        }
+        return $message_info;
+    }
+
+    public function openAll(array $request, $rid)
+    {
+        $reply_info['reply'] = $this->where('id', $rid)->get();
+        $user = UserModel::find(ReplyModel::find($rid)->user_id)->name;
+        $data = ReplyModel::where('reply_id', $rid)->oldest()->get();
+
+        $index = array();
+        $rs = array();
+        $data_re = $data->toArray();
+        foreach ($data_re as &$r) {
+            $index[$r['rid']] = &$r;
+            $r['replies'] = [];
+            if ($r['reply_id'] == $rid) {
+                $rs[] = &$r;
+            } else {
+                $index[$r['reply_id']]['replies'][] = &$r;
+            }
+        }
+        foreach ($reply_info['reply'] as $k => $v) {
+            $v['name'] = $user;
+            $v['replies'] = $rs;
+        }
+        return $reply_info;
     }
 
 }

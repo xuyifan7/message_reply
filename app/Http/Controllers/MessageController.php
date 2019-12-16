@@ -7,6 +7,7 @@ use App\Http\Requests\MessageInfoRequest;
 use App\Http\Requests\MessageUpdateRequest;
 use App\MessageModel;
 use App\ReplyModel;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class MessageController extends Controller
@@ -67,5 +68,21 @@ class MessageController extends Controller
         return $result;
     }
 
+
+    //show one message and one reply , open to show all replies
+    public function oneInfo(MessageInfoRequest $request)
+    {
+        $data = $request->validated();
+        $current_url = $request->getUri();
+        $result = app(MessageModel::class)->showOneInfo($data, $current_url);
+        return response()->json(['status' => 1, 'msg' => 'one message info', 'data' => $result]);
+    }
+
+    public function openAllInfo(OpenAllInfoRequest $request, $rid)
+    {
+        $data = $request->validated();
+        $result = app(MessageModel::class)->openAll($data, $rid);
+        return response()->json(['status' => 1, 'msg' => 'open all info for one reply', 'data' => $result]);
+    }
 
 }

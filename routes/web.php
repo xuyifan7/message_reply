@@ -32,6 +32,7 @@ Route::group(['domain' => config('www.message.reply.com')], function ()
         Route::post('reply_delete/{rid}', 'ReplyController@replyDelete');
         Route::get('list', 'MessageController@list');
         Route::get('info', 'MessageController@info');
+        Route::get('one_info', 'MessageController@oneInfo');
     });
 });
 
