@@ -46,25 +46,25 @@ class MessageController extends Controller
     public function info(MessageInfoRequest $request)
     {
         $data = $request->validated();
-        $result = app(MessageModel::class)->showInfo($data);
+        $current_url = $request->getUri();
+        $result = app(MessageModel::class)->showInfo($data, $current_url);
         return response()->json(['status' => 1, 'msg' => 'messages of one user', 'data' => $result]);
     }
 
     public function replyList($data, $reply_id)
     {
-        $re = array();
+        $result = array();
         foreach ($data as $k => $v) {
-            //$v['reply_id'] = &$data;
             if (empty($data)) {
-                return;
+                return '';
             }
             if ($v['reply_id'] == $reply_id) {
-                $re[$k] = $v;
+                $result[$k] = $v;
                 unset($data[$k]);
-                $re[$k]['replies'] = $this->replyList($data, $v['rid']);
+                $result[$k]['replies'] = $this->replyList($data, $v['rid']);
             }
         }
-        return $re;
+        return $result;
     }
 
 

@@ -4,7 +4,7 @@ namespace App;
 
 use App\Http\Controllers\MessageController;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Mail\Message;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class MessageModel extends Model
@@ -93,14 +93,37 @@ class MessageModel extends Model
         return $message;
     }
 
-    public function showInfo(array $request)
+    public function showInfo(array $request, $current_url)
     {
-        $message_info['message'] = $this->where('id', $request['id'])->paginate(5);
+        $message_info['message'] = $this->where('id', $request['id'])->get();
         $user = UserModel::find($this->find($request['id'])->user_id)->name;
         $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
-        /*$reply = collect($data)->keyBy('rid')->get();
-        $replies = app(MessageController::class)->replyList($reply, 0);*/
-        $replies = app(MessageController::class)->replyList($data, 0);
+
+        //$replies = app(MessageController::class)->replyList($data, 0);
+
+        $index = array();
+        $rs = array();
+        $data_re = $data->toArray();
+        foreach ($data_re as &$r) {
+            $index[$r['rid']] = &$r;
+            $r['replies'] = [];
+            if ($r['reply_id'] == 0) {
+                $rs[] = &$r;
+            } else {
+                $index[$r['reply_id']]['replies'][] = &$r;
+            }
+        }
+        //var_dump($rs);die;
+        //$replies = $rs;
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $collection = collect($rs);
+        $perPage = 1;
+        $currentPageSearchResults = $collection->slice(($currentPage * $perPage)-$perPage, $perPage)->all();
+        $paginatedSearchResults = new LengthAwarePaginator($currentPageSearchResults, count($collection), $perPage);
+        $paginatedSearchResults->setPath($current_url);
+        $replies = $paginatedSearchResults;
+
         foreach ($message_info['message'] as $k => $value) {
             $value['name'] = $user;
             $value['replies'] = $replies;
