@@ -22,7 +22,7 @@ class ReplyUpdateRequest extends YyfRequest
     public function rules()
     {
         return [
-            'message_id'=>'required|exists:message,id',
+            //'message_id'=>'required|exists:message,id',
             'reply_content'=>'required|string|max:255',
             //'reply_id'=>'required|max:20|exists:message,id'
         ];
@@ -31,8 +31,8 @@ class ReplyUpdateRequest extends YyfRequest
     public function messages()
     {
         return [
-            'message_id.required' => '请输入回复的留言ID|-3',
-            'message_id.exists' => '回复的留言ID不存在|-3',
+            //'message_id.required' => '请输入回复的留言ID|-3',
+            //'message_id.exists' => '回复的留言ID不存在|-3',
             'reply_content.required' => '请输入回复内容|-3',
             'reply_content.max' => '回复内容过长|-4',
             /*'reply_id.required'=>'请输入回复的留言id|-5',

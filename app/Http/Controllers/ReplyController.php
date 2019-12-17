@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ReplyCreateRequest;
 use App\Http\Requests\ReplyUpdateRequest;
-use App\ReplyModel;
+use App\Http\Services\DataService\ReplyDS;
+use App\Models\ReplyModel;
+use http\Env\Response;
 
 class ReplyController extends Controller
 {
@@ -13,8 +15,8 @@ class ReplyController extends Controller
         $data = $request->validated();
         $user = session('user');
         $data['user_id'] = $user['uid'];
-        $result = app(ReplyModel::class)->replyCreate($data);
-        return response()->json(['status' => 1, 'msg' => 'create reply success！', 'data' => $result]);
+        $result = app(ReplyDS::class)->replyCreate($data);
+        return response()->json($result);
     }
 
     public function replyUpdate(ReplyUpdateRequest $request, $rid)
@@ -22,13 +24,13 @@ class ReplyController extends Controller
         $data = $request->validated();
         $user = session('user');
         $data['user_id'] = $user['uid'];
-        $result = app(ReplyModel::class)->replyUpdate($data, $rid);
-        return response()->json(['status' => 1, 'msg' => 'update reply success！', 'data' => $result]);
+        $result = app(ReplyDS::class)->replyUpdate($data, $rid);
+        return response()->json($result);
     }
 
     public function replyDelete($rid)
     {
-        $result = app(ReplyModel::class)->replyDelete($rid);
+        $result = app(ReplyDS::class)->replyDelete($rid);
         return response()->json(['status' => $result['status'], 'msg' => $result['msg']]);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +21,7 @@ class UserModel extends Model
         'name', 'password', 'email'
     ];
 
-    public function addUser(array $request)
+    /*public function addUser(array $request)
     {
         $user = new UserModel;
         $user->name = $request['name'];
@@ -29,15 +29,15 @@ class UserModel extends Model
         $user->password = Hash::make($request['password']);
         $user->save();
         return $user->toArray();
-    }
+    }*/
 
-    public function login(array $request)
+    /*public function login(array $request)
     {
         $user = array();
         $user['name'] = $request['name'];
         $user['password'] = Hash::make($request['password']);
         $user_info = UserModel::where('name', $user['name'])->first();
         return $user_info;
-    }
+    }*/
 
 }

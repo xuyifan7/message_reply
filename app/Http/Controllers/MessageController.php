@@ -6,8 +6,9 @@ use App\Http\Requests\MessageCreateRequest;
 use App\Http\Requests\MessageInfoRequest;
 use App\Http\Requests\MessageUpdateRequest;
 use App\Http\Requests\OpenAllInfoRequest;
-use App\MessageModel;
-use App\ReplyModel;
+use App\Http\Services\DataService\MessageDS;
+use App\Models\MessageModel;
+use App\Models\ReplyModel;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -17,10 +18,9 @@ class MessageController extends Controller
     {
         $data = $request->validated();
         //$user = $request->user();
-        //$user = session()->get('user');
         $user = session('user');
         $data['user_id'] = $user['uid'];
-        $result = app(MessageModel::class)->messageCreate($data);
+        $result = app(MessageDS::class)->messageCreate($data);
         return response()->json(['status' => 1, 'msg' => 'create message success！', 'data' => $result]);
     }
 
@@ -29,14 +29,14 @@ class MessageController extends Controller
         $data = $request->validated();
         $user = session('user');
         $data['user_id'] = $user['uid'];
-        $result = app(MessageModel::class)->messageUpdate($data, $id);
-        return response()->json(['status' => 1, 'msg' => 'update message success！', 'data' => $result]);
+        $result = app(MessageDS::class)->messageUpdate($data, $id);
+        return response()->json($result);
     }
 
     public function delete($id)
     {
-        $result = app(MessageModel::class)->messageDelete($id);
-        return response()->json(['status' => $result['status'], 'msg' => $result['msg']]);
+        $result = app(MessageDS::class)->messageDelete($id);
+        return response()->json($result);
     }
 
     public function list()
@@ -81,9 +81,14 @@ class MessageController extends Controller
 
     public function openAllInfo(OpenAllInfoRequest $request)
     {
+        /*$mes_id = ReplyModel::find($request['rid'])->message_id;
+        $id = intval($request['id']);
+        if ($mes_id != $id) {
+            //请输入该条留言下正确的回复ID
+        }*/
         $data = $request->validated();
         $result = app(MessageModel::class)->openAll($data);
-        return response()->json(['status' => 1, 'msg' => 'open all info for one reply', 'data' => $result]);
+        return $result;
     }
 
 }
