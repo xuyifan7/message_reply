@@ -139,24 +139,23 @@ class MessageModel extends Model
         $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
         $group = ReplyModel::select(DB::raw('reply_id, count(*) as count'))->where('message_id', $request['id'])->where('reply_id', '<>', 0)->groupBy('reply_id')->get();
         $count = collect($group)->pluck('count', 'reply_id');
-        //dd(collect($data)->keyBy('rid')->toArray());
-
-        $rs = array();
-        foreach ($data as $k => $v) {
-            if ($v['reply_id'] == 0) {
-                array_push($rs, $v);
-                $v['count'] = 0;
-                foreach ($count as $rid => $cou) {
-                    if ($v['rid'] == $rid) {
-                        $v['count'] = $cou;
-                    }
+        $reply = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->paginate(2);
+        foreach ($reply as $k => $v) {
+            $re_r = collect($data)->whereIn('reply_id', $v['rid'])->first()->toArray();
+            //echo "re_r:\t";var_dump($re_r);
+            if ($v['rid'] == $re_r['reply_id']) {
+                $v['replies'] = $re_r;
+            }
+            $v['count'] = 0;
+            foreach ($count as $rid => $cou) {
+                if ($v['rid'] == $rid) {
+                    $v['count'] = $cou;
                 }
             }
         }
-
         foreach ($message_info['message'] as $k => $value) {
             $value['name'] = $user;
-            $value['replies'] = $rs;
+            $value['replies'] = $reply;
         }
         return $message_info;
     }
