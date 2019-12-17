@@ -114,8 +114,6 @@ class MessageModel extends Model
                 $index[$r['reply_id']]['replies'][] = &$r;
             }
         }
-        //var_dump($rs);die;
-        //$replies = $rs;
 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $collection = collect($rs);
@@ -149,10 +147,8 @@ class MessageModel extends Model
                 array_push($rs, $v);
                 $v['count'] = 0;
                 foreach ($count as $rid => $cou) {
-                    //echo $v['rid']."\t";
                     if ($v['rid'] == $rid) {
                         $v['count'] = $cou;
-                        //$v['open_all'] = $this->openAll($v['rid']);
                     }
                 }
             }
@@ -165,19 +161,18 @@ class MessageModel extends Model
         return $message_info;
     }
 
-    public function openAll(array $request, $rid)
+    public function openAll(array $request)
     {
-        $reply_info['reply'] = $this->where('id', $rid)->get();
-        $user = UserModel::find(ReplyModel::find($rid)->user_id)->name;
-        $data = ReplyModel::where('reply_id', $rid)->oldest()->get();
-
+        $reply_info['reply'] = ReplyModel::where('rid', $request['rid'])->get();
+        $user = UserModel::find(ReplyModel::find($request['rid'])->user_id)->name;
+        $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
         $index = array();
         $rs = array();
         $data_re = $data->toArray();
         foreach ($data_re as &$r) {
             $index[$r['rid']] = &$r;
             $r['replies'] = [];
-            if ($r['reply_id'] == $rid) {
+            if ($r['reply_id'] == $request['rid']) {
                 $rs[] = &$r;
             } else {
                 $index[$r['reply_id']]['replies'][] = &$r;

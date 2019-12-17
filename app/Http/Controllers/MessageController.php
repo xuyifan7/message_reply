@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MessageCreateRequest;
 use App\Http\Requests\MessageInfoRequest;
 use App\Http\Requests\MessageUpdateRequest;
+use App\Http\Requests\OpenAllInfoRequest;
 use App\MessageModel;
 use App\ReplyModel;
 use Illuminate\Http\Request;
@@ -81,7 +82,7 @@ class MessageController extends Controller
     public function openAllInfo(OpenAllInfoRequest $request)
     {
         $data = $request->validated();
-        $result = app(MessageModel::class)->openAll($data, $data['rid']);
+        $result = app(MessageModel::class)->openAll($data);
         return response()->json(['status' => 1, 'msg' => 'open all info for one reply', 'data' => $result]);
     }
 
