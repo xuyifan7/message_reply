@@ -11,23 +11,43 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class MessagePS
 {
-    public function getMessageList()
+    public function getMessageList($page, $per_page)
     {
-        $message = MessageModel::latest()->paginate(5);
+        $result = array();
+        $result['status'] = 0;
+        //$message = MessageModel::latest()->paginate(5);
         $messages = MessageModel::latest()->get();
-        $user_ids = collect($messages)->pluck('user_id')->unique()->toArray();
-        $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
-        $user = collect($user)->pluck('uid', 'name')->toArray();
-        foreach ($message as $k => $v) {
-            $count = ReplyModel::where('message_id', $v['id'])->count();
-            $v['count'] = $count;
-            foreach ($user as $name => $users) {
-                if ($v['user_id'] == $users) {
-                    $v['name'] = $name;
+        $total = collect($messages)->count();
+        $last_page = ceil($total / $per_page);
+        if ($page > $last_page) {
+            $result['msg'] = "请输入正确范围内的页码!";
+        } else {
+            $page_start = ($page - 1) * $per_page;
+            $message = collect(MessageModel::latest()->get())->slice($page_start, $per_page)->values()->toArray();
+            //dd($message);
+            //$message = array_slice($messages->toArray(), $page_start, $per_page);
+            $user_ids = collect($messages)->pluck('user_id')->unique()->toArray();
+            $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
+            $user = collect($user)->pluck('uid', 'name')->toArray();
+            $message['per_page'] = $per_page;
+            $message['total'] = $total;
+            $message['last_page'] = $last_page;
+            $message['current_page'] = $page;
+            foreach ($message as $k => $v) {
+                /*$count = ReplyModel::where('message_id', $v['id'])->count();
+                echo "count:".$count.;
+                $v['count'] = $count;*/
+                foreach ($user as $name => $users) {
+                    if ($v['user_id'] == $users) {
+                        $v['name'] = $name;
+                    }
                 }
             }
+            $result['status'] = 1;
+            $result['msg'] = "Messages list";
+            $result['data'] = $message;
         }
-        return $message;
+        return $result;
     }
 
     //show one message's all replies and paginate

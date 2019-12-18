@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageCreateRequest;
 use App\Http\Requests\MessageInfoRequest;
+use App\Http\Requests\MessageListRequest;
 use App\Http\Requests\MessageUpdateRequest;
 use App\Http\Requests\OpenAllInfoRequest;
 use App\Http\Services\DataService\MessageDS;
@@ -40,10 +41,16 @@ class MessageController extends Controller
         return response()->json($result);
     }
 
-    public function list()
+    public function list(MessageListRequest $request)
     {
-        $result = app(MessagePS::class)->getMessageList();
-        return response()->json(['status' => 1, 'msg' => 'Messages list', 'data' => $result]);
+        //dd(123);
+        if (empty($request['page'])) {
+            $page = 1;
+        } else {
+            $page = $request['page'];
+        }
+        $result = app(MessagePS::class)->getMessageList($page, $request['per_page']);
+        return response()->json($result);
     }
 
     public function info(MessageInfoRequest $request)

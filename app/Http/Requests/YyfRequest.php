@@ -18,7 +18,7 @@ class YyfRequest extends FormRequest
         return true;
     }
 
-    protected function failedValidation(Validator $validator)
+    /*protected function failedValidation(Validator $validator)
     {
         if (strpos($validator->getMessageBag()->first(), '|') > 0) {
             list($message, $code) = explode("|", $validator->getMessageBag()->first());
@@ -27,11 +27,17 @@ class YyfRequest extends FormRequest
             $message = $validator->getMessageBag()->first();
             throw new HttpResponseException($message);
         }
+    }*/
+
+    protected function failedValidation(Validator $validator)
+    {
+        if (strpos($validator->getMessageBag()->first(), '|') > 0) {
+            list($message, $code) = explode("|", $validator->getMessageBag()->first());
+        } else {
+            $message = $validator->getMessageBag()->first();
+            $code = 500;
+        }
+        throw new HttpResponseException(response()->json(['code' => $code, 'errors' => $message]));
     }
 
-/*    protected function user(){
-        //$user = session()->get('user');
-        //return $user;
-        echo 111;
-    }*/
 }
