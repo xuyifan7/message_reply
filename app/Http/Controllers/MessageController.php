@@ -7,6 +7,7 @@ use App\Http\Requests\MessageInfoRequest;
 use App\Http\Requests\MessageUpdateRequest;
 use App\Http\Requests\OpenAllInfoRequest;
 use App\Http\Services\DataService\MessageDS;
+use App\Http\Services\PageService\MessagePS;
 use App\Models\MessageModel;
 use App\Models\ReplyModel;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ class MessageController extends Controller
 
     public function list()
     {
-        $result = app(MessageModel::class)->showList();
+        $result = app(MessagePS::class)->getMessageList();
         return response()->json(['status' => 1, 'msg' => 'Messages list', 'data' => $result]);
     }
 
@@ -49,11 +50,11 @@ class MessageController extends Controller
     {
         $data = $request->validated();
         $current_url = $request->getUri();
-        $result = app(MessageModel::class)->showInfo($data, $current_url);
+        $result = app(MessagePS::class)->getInfo($data, $current_url);
         return response()->json(['status' => 1, 'msg' => 'messages of one user', 'data' => $result]);
     }
 
-    public function replyList($data, $reply_id)
+    /*public function replyList($data, $reply_id)
     {
         $result = array();
         foreach ($data as $k => $v) {
@@ -67,28 +68,21 @@ class MessageController extends Controller
             }
         }
         return $result;
-    }
-
+    }*/
 
     //show one message and one reply , open to show all replies
     public function oneInfo(MessageInfoRequest $request)
     {
         $data = $request->validated();
         $current_url = $request->getUri();
-        $result = app(MessageModel::class)->showOneInfo($data, $current_url);
+        $result = app(MessagePS::class)->getOneInfo($data, $current_url);
         return response()->json(['status' => 1, 'msg' => 'one message info', 'data' => $result]);
     }
 
     public function openAllInfo(OpenAllInfoRequest $request)
     {
-        /*$mes_id = ReplyModel::find($request['rid'])->message_id;
-        $id = intval($request['id']);
-        if ($mes_id != $id) {
-            //请输入该条留言下正确的回复ID
-        }*/
         $data = $request->validated();
-        $result = app(MessageModel::class)->openAll($data);
+        $result = app(MessagePS::class)->getOpenAll($data);
         return $result;
     }
-
 }

@@ -61,36 +61,38 @@ class MessageModel extends Model
 
     public function showList()
     {
-        $message = $this->latest()->paginate(5);
-        $messages = $this->latest()->get();
-        /*$message_ids = collect($messages)->pluck('id')->toArray();
+        /*$message = $this->latest()->paginate(5);
+        $messages = $this->latest()->get();*/
+        /*//un_use
+         * $message_ids = collect($messages)->pluck('id')->toArray();
         $result = ReplyModel::select(DB::raw('message_id, count(*) as value'))->where('reply_id', 0)->whereIn('message_id', $message_ids)->groupBy('message_id')->get()->toArray();
         $result = collect($result)->pluck('message_id', 'value')->toArray();
         //dd($result);*/
-        $user_ids = collect($messages)->pluck('user_id')->unique()->toArray();
+        /*$user_ids = collect($messages)->pluck('user_id')->unique()->toArray();
         $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
         $user = collect($user)->pluck('uid', 'name')->toArray();
         //dd($user);
         foreach ($message as $k => $v) {
             $count = ReplyModel::where('message_id', $v['id'])->count();
-            $v['count'] = $count;
-            /*$v['count'] = 0;
+            $v['count'] = $count;*/
+            /*//un_use
+             * $v['count'] = 0;
             foreach ($result as $count => $mes) {
                 if ($v['id'] == $mes) {
                     $v['count'] = $count;
                 }
             }*/
-            foreach ($user as $name => $users) {
+           /* foreach ($user as $name => $users) {
                 if ($v['user_id'] == $users) {
                     $v['name'] = $name;
                 }
             }
         }
-        return $message;
+        return $message;*/
     }
 
     //show one message's all replies and paginate
-    public function showInfo(array $request, $current_url)
+    /*public function showInfo(array $request, $current_url)
     {
         $message_info['message'] = $this->where('id', $request['id'])->get();
         $user = UserModel::find($this->find($request['id'])->user_id)->name;
@@ -122,29 +124,28 @@ class MessageModel extends Model
             $value['replies'] = $replies;
         }
         return $message_info;
-    }
+    }*/
 
     //show one message and one reply , open to show all replies
     public function showOneInfo(array $request, $current_url)
     {
-        $message_info['message'] = $this->where('id', $request['id'])->get();
+        /*$message_info['message'] = $this->where('id', $request['id'])->get();
         $user = UserModel::find($this->find($request['id'])->user_id)->name;
-        $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
+        $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();*/
         /*$group = ReplyModel::select(DB::raw('reply_id, count(*) as count'))->where('message_id', $request['id'])->where('reply_id', '<>', 0)->groupBy('reply_id')->get();
         $count = collect($group)->pluck('count', 'reply_id');*/
-        $reply = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->paginate(2);
+        /*$reply = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->paginate(2);
         $reply->withPath($current_url);
         foreach ($reply as $k => $v) {
             $count = ReplyModel::where('reply_id', $v['rid'])->count();
-            $v['count'] = $count;
+            $v['count'] = $count;*/
             /*$v['count'] = 0;
             foreach ($count as $rid => $cou) {
                 if ($v['rid'] == $rid) {
                     $v['count'] = $cou;
                 }
             }*/
-
-            $re_r = collect($data)->whereIn('reply_id', $v['rid'])->first()->toArray();
+            //$re_r = collect($data)->whereIn('reply_id', $v['rid'])->first()->toArray();
             //show two
             /*$re = collect($data)->whereIn('reply_id', $v['rid'])->toArray();
             $re_two = array_slice($re, 0, 2);
@@ -153,7 +154,7 @@ class MessageModel extends Model
             }
             //var_dump($re_two);echo "\t";*/
 
-            if ($v['rid'] == $re_r['reply_id']) {
+            /*if ($v['rid'] == $re_r['reply_id']) {
                 $v['replies'] = $re_r;
             }
         }
@@ -161,10 +162,10 @@ class MessageModel extends Model
             $value['name'] = $user;
             $value['replies'] = $reply;
         }
-        return $message_info;
+        return $message_info;*/
     }
 
-    public function openAll(array $request)
+    /*public function openAll(array $request)
     {
         $result = array();
         $result['status'] = 0;
@@ -197,6 +198,6 @@ class MessageModel extends Model
             $result['data'] = $reply_info;
         }
         return $result;
-    }
+    }*/
 
 }
