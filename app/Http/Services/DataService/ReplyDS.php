@@ -4,14 +4,16 @@
 namespace App\Http\Services\DataService;
 
 
+use App\Models\MessageModel;
 use App\Models\ReplyModel;
+use Illuminate\Support\Facades\DB;
 
 class ReplyDS
 {
     public function replyCreate(array $request)
     {
         $result = array();
-        if ($request['reply_id']) {
+        if (isset($request['reply_id'])) {
             $r_mes = ReplyModel::find($request['reply_id'])->message_id;
             $message_id = intval($request['message_id']);
             if ($r_mes != $message_id) {
@@ -23,12 +25,14 @@ class ReplyDS
                 $result['msg'] = "create reply success！";
                 $result['data'] = $reply->create($request);
             }
+            ReplyModel::find($request['reply_id'])->increment('r_reply_count');
         } else {
             $reply = new ReplyModel;
             $result['status'] = 1;
             $result['msg'] = "create reply success！";
             $result['data'] = $reply->create($request);
         }
+        MessageModel::find($request['message_id'])->increment('reply_count');
         return $result;
     }
 
@@ -49,10 +53,12 @@ class ReplyDS
     public function replyDelete($rid)
     {
         $reply = ReplyModel::find($rid);
-        $replies = ReplyModel::where('reply_id', $rid);
         $result = array();
         $result['status'] = 0;
         if (!is_null($reply)) {
+            $message_id = $reply->message_id;
+            $reply_id = $reply->reply_id;
+            $replies = ReplyModel::where('reply_id', $rid);
             $res = $reply->delete();
             if ($replies->count() > 0) {
                 $r_res = $replies->delete();
@@ -69,6 +75,10 @@ class ReplyDS
                 } else {
                     $result['msg'] = "delete reply failed!";
                 }
+            }
+            MessageModel::find($message_id)->decrement('reply_count');
+            if ($reply_id != 0) {
+                ReplyModel::find($reply_id)->decrement('r_reply_count');
             }
         } else {
             $result['msg'] = "The reply not exist!";

@@ -43,21 +43,16 @@ class MessageController extends Controller
 
     public function list(MessageListRequest $request)
     {
-        //dd(123);
-        if (empty($request['page'])) {
-            $page = 1;
-        } else {
-            $page = $request['page'];
-        }
-        $result = app(MessagePS::class)->getMessageList($page, $request['per_page']);
+        $data = $request->validated();
+        $result = app(MessagePS::class)->getMessageList($data['page'], $data['per_page']);
         return response()->json($result);
     }
 
     public function info(MessageInfoRequest $request)
     {
         $data = $request->validated();
-        $current_url = $request->getUri();
-        $result = app(MessagePS::class)->getInfo($data, $current_url);
+        //$current_url = $request->getUri();
+        $result = app(MessagePS::class)->getInfo($data, $data['page'], $data['per_page']);
         return response()->json(['status' => 1, 'msg' => 'messages of one user', 'data' => $result]);
     }
 
@@ -81,8 +76,8 @@ class MessageController extends Controller
     public function oneInfo(MessageInfoRequest $request)
     {
         $data = $request->validated();
-        $current_url = $request->getUri();
-        $result = app(MessagePS::class)->getOneInfo($data, $current_url);
+        //$current_url = $request->getUri();
+        $result = app(MessagePS::class)->getOneInfo($data, $data['page'], $data['per_page']);
         return response()->json(['status' => 1, 'msg' => 'one message info', 'data' => $result]);
     }
 

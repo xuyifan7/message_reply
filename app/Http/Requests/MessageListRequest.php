@@ -32,7 +32,8 @@ class MessageListRequest extends YyfRequest
     public function messages()
     {
         return [
-            'integer' => '请输入正确的页数!|-1',
+            'required' => ':attribute 是必填项|-3',
+            'integer' => ':attribute 这个参数应为整数|-1',
             'min' => ':attribute 这个参数不能小于:min|-2'
         ];
     }

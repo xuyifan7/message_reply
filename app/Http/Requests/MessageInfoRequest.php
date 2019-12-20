@@ -22,15 +22,19 @@ class MessageInfoRequest extends YyfRequest
     public function rules()
     {
         return [
-            'id'=>'required|exists:message',
+            'id' => 'required|exists:message',
+            'page' => 'required|integer|min:1',
+            'per_page' => 'required|integer|min:1',
         ];
     }
 
     public function messages()
     {
         return [
-            'id.required'=>'缺少留言ID|-20',
-            'id.exists'=>'留言不存在|-21',
+            'required' => ':attribute 是必填项|-20',
+            'id.exists' => '留言不存在|-21',
+            'integer' => ':attribute 这个参数应为整数|-1',
+            'min' => ':attribute 这个参数不能小于:min|-2'
         ];
     }
 

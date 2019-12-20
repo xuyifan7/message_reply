@@ -11,47 +11,43 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class MessagePS
 {
-    public function getMessageList($page, $per_page)
+    public function getMessageList($current_page, $per_page)
     {
         $result = array();
         $result['status'] = 0;
         //$message = MessageModel::latest()->paginate(5);
-        $messages = MessageModel::latest()->get();
-        $total = collect($messages)->count();
+        $message = $this->page(MessageModel::latest(), $current_page, $per_page);
+        $page_start = $this->offSet($current_page, $per_page);
+        $message['message_list'] = MessageModel::latest()->offset($page_start)->limit($per_page)->get()->toArray();
+        /*$total = MessageModel::latest()->count();
         $last_page = ceil($total / $per_page);
-        if ($page > $last_page) {
-            $result['msg'] = "请输入正确范围内的页码!";
-        } else {
-            $page_start = ($page - 1) * $per_page;
-            $message = collect(MessageModel::latest()->get())->slice($page_start, $per_page)->values()->toArray();
-            //dd($message);
-            //$message = array_slice($messages->toArray(), $page_start, $per_page);
-            $user_ids = collect($messages)->pluck('user_id')->unique()->toArray();
-            $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
-            $user = collect($user)->pluck('uid', 'name')->toArray();
-            $message['per_page'] = $per_page;
-            $message['total'] = $total;
-            $message['last_page'] = $last_page;
-            $message['current_page'] = $page;
-            foreach ($message as $k => $v) {
-                /*$count = ReplyModel::where('message_id', $v['id'])->count();
-                echo "count:".$count.;
-                $v['count'] = $count;*/
-                foreach ($user as $name => $users) {
-                    if ($v['user_id'] == $users) {
-                        $v['name'] = $name;
-                    }
+        if ($current_page > $last_page) {
+            $current_page = $last_page;
+        }
+        $page_start = $this->offSet($current_page, $per_page);
+        $message['message_list'] = MessageModel::latest()->offset($page_start)->limit($per_page)->get()->toArray();
+        $message['current_page'] = $current_page;
+        $message['last_page'] = $last_page;
+        $message['per_page'] = $per_page;
+        $message['total'] = $total;*/
+        $user_ids = MessageModel::latest()->pluck('user_id')->unique()->toArray();
+        $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
+        $user = collect($user)->pluck('uid', 'name')->toArray();
+        foreach ($message['message_list'] as $k => &$v) {
+            foreach ($user as $name => $users) {
+                if ($v['user_id'] == $users) {
+                    $v['name'] = $name;
                 }
             }
-            $result['status'] = 1;
-            $result['msg'] = "Messages list";
-            $result['data'] = $message;
         }
+        $result['status'] = 1;
+        $result['msg'] = "Messages list";
+        $result['data'] = $message;
         return $result;
     }
 
     //show one message's all replies and paginate
-    public function getInfo(array $request, $current_url)
+    public function getInfo(array $request, $current_page, $per_page)
     {
         $message_info['message'] = MessageModel::where('id', $request['id'])->get();
         $user = UserModel::find(MessageModel::find($request['id'])->user_id)->name;
@@ -70,13 +66,26 @@ class MessagePS
             }
         }
 
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $total = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->count();
+        $last_page = ceil($total / $per_page);
+        if ($current_page > $last_page) {
+            $current_page = $last_page;
+        }
+        $page_start = $this->offSet($current_page, $per_page);
+        $replies = array_slice($rs, $page_start, $per_page);
+        foreach ($replies as $k => &$v) {
+            $v['current_page'] = $current_page;
+            $v['last_page'] = $last_page;
+            $v['per_page'] = $per_page;
+            $v['total'] = $total;
+        }
+        /*$currentPage = LengthAwarePaginator::resolveCurrentPage();
         $collection = collect($rs);
         $perPage = 1;
         $currentPageSearchResults = $collection->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
         $paginatedSearchResults = new LengthAwarePaginator($currentPageSearchResults, count($collection), $perPage);
-        $paginatedSearchResults->setPath($current_url);
-        $replies = $paginatedSearchResults;
+        //$paginatedSearchResults->setPath($current_url);
+        $replies = $paginatedSearchResults;*/
 
         foreach ($message_info['message'] as $k => $value) {
             $value['name'] = $user;
@@ -86,16 +95,16 @@ class MessagePS
     }
 
     //show one message and one reply , open to show all replies
-    public function getOneInfo(array $request, $current_url)
+    public function getOneInfo(array $request, $current_page, $per_page)
     {
         $message_info['message'] = MessageModel::where('id', $request['id'])->get();
         $user = UserModel::find(MessageModel::find($request['id'])->user_id)->name;
         $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
-        $reply = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->paginate(2);
-        $reply->withPath($current_url);
-        foreach ($reply as $k => $v) {
-            $count = ReplyModel::where('reply_id', $v['rid'])->count();
-            $v['count'] = $count;
+        //$reply = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->paginate(2);
+        $reply = $this->page(ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest(), $current_page, $per_page);
+        $page_start = $this->offSet($current_page, $per_page);
+        $reply['data'] = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->offset($page_start)->limit($per_page)->get()->toArray();
+        foreach ($reply['data'] as $k => &$v) {
             $re_r = collect($data)->whereIn('reply_id', $v['rid'])->first()->toArray();
             /*//show two
             $re = collect($data)->whereIn('reply_id', $v['rid'])->toArray();
@@ -147,6 +156,28 @@ class MessagePS
             $result['msg'] = "open all info for one reply";
             $result['data'] = $reply_info;
         }
+        return $result;
+    }
+
+
+    public function offSet($current_page, $per_page)
+    {
+        $page_start = ($current_page - 1) * $per_page;
+        return $page_start;
+    }
+
+    public function page($data, $current_page, $per_page)
+    {
+        $result = array();
+        $total = $data->count();
+        $last_page = ceil($total / $per_page);
+        if ($current_page > $last_page) {
+            $current_page = $last_page;
+        }
+        $result['current_page'] = $current_page;
+        $result['last_page'] = $last_page;
+        $result['per_page'] = $per_page;
+        $result['total'] = $total;
         return $result;
     }
 
