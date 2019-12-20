@@ -87,4 +87,9 @@ class MessageController extends Controller
         $result = app(MessagePS::class)->getOpenAll($data);
         return $result;
     }
+
+    /*public function replyRankingList(Request $request)
+    {
+
+    }*/
 }

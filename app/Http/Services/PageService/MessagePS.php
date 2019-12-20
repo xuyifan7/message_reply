@@ -4,10 +4,13 @@
 namespace App\Http\Services\PageService;
 
 
+use App\Http\Services\DataService\MessageStorageDS;
 use App\Models\MessageModel;
 use App\Models\ReplyModel;
 use App\Models\UserModel;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Redis;
 
 class MessagePS
 {
@@ -86,7 +89,6 @@ class MessagePS
         $paginatedSearchResults = new LengthAwarePaginator($currentPageSearchResults, count($collection), $perPage);
         //$paginatedSearchResults->setPath($current_url);
         $replies = $paginatedSearchResults;*/
-
         foreach ($message_info['message'] as $k => $value) {
             $value['name'] = $user;
             $value['replies'] = $replies;
@@ -97,7 +99,10 @@ class MessagePS
     //show one message and one reply , open to show all replies
     public function getOneInfo(array $request, $current_page, $per_page)
     {
-        $message_info['message'] = MessageModel::where('id', $request['id'])->get();
+        //$message_info['message'] = MessageModel::where('id', $request['id'])->get();
+        $message = new MessageStorageDS();
+        $message->put($request['id']);
+        $message_info['message'] = $message->get($request['id']);
         $user = UserModel::find(MessageModel::find($request['id'])->user_id)->name;
         $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
         //$reply = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->paginate(2);
