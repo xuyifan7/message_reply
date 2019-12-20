@@ -7,6 +7,7 @@ namespace App\Http\Services\DataService;
 use App\Models\MessageModel;
 use App\Models\ReplyModel;
 use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class ReplyDS
 {
@@ -38,14 +39,24 @@ class ReplyDS
 
     public function replyUpdate(array $request, int $rid)
     {
-        $reply = ReplyModel::find($rid);
         $result = array();
         $result['status'] = 0;
-        $reply_up = $reply->update($request);
-        if ($reply_up) {
-            $result['status'] = 1;
-            $result['msg'] = "update reply success！";
-            $result['data'] = $reply_up;
+        DB::beginTransaction();
+        try {
+            $reply = ReplyModel::find($rid);
+            $reply_up = $reply->update($request);
+            if (!$reply_up) {
+                throw new \Exception("update reply failed!", 0);
+            } else {
+                $result['status'] = 1;
+                $result['msg'] = "update reply success！";
+                $result['data'] = $reply_up;
+            }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollback();
+            echo $exception->getMessage();
+            echo $exception->getCode();
         }
         return $result;
     }
@@ -56,25 +67,33 @@ class ReplyDS
         $result = array();
         $result['status'] = 0;
         if (!is_null($reply)) {
-            $message_id = $reply->message_id;
-            $reply_id = $reply->reply_id;
-            $replies = ReplyModel::where('reply_id', $rid);
-            $res = $reply->delete();
-            if ($replies->count() > 0) {
-                $r_res = $replies->delete();
-                if ($res && $r_res) {
-                    $result['status'] = 1;
-                    $result['msg'] = "delete message success!";
+            DB::beginTransaction();
+            try {
+                $message_id = $reply->message_id;
+                $reply_id = $reply->reply_id;
+                $replies = ReplyModel::where('reply_id', $rid);
+                $res = $reply->delete();
+                if (!$res) {
+                    throw new \Exception("delete reply failed!", 0);
                 } else {
-                    $result['msg'] = "delete message failed!";
-                }
-            } else {
-                if ($res) {
                     $result['status'] = 1;
                     $result['msg'] = "delete reply success!";
-                } else {
-                    $result['msg'] = "delete reply failed!";
                 }
+                DB::commit();
+                if ($replies->count() > 0) {
+                    $r_res = $replies->delete();
+                    if (!$r_res) {
+                        throw new \Exception("delete replies failed!", 0);
+                    } else {
+                        $result['status'] = 1;
+                        $result['msg'] = "delete reply success!";
+                    }
+                    DB::commit();
+                }
+            } catch (\Exception $exception) {
+                DB::rollback();
+                echo $exception->getMessage();
+                echo $exception->getCode();
             }
             MessageModel::find($message_id)->decrement('reply_count');
             if ($reply_id != 0) {
