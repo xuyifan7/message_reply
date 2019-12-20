@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Cache;
 
 class MessageStorageDS
 {
-    public function put($id)
+    public function putById($id)
     {
         $minutes = 1;
         $data = MessageModel::where('id', $id)->get();
         Cache::put('message:'.$id, $data, $minutes);
     }
 
-    public function get($id)
+    public function getById($id)
     {
         $data = Cache::get('message:'.$id);
         return $data;

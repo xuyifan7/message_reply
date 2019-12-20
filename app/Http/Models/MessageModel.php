@@ -15,7 +15,7 @@ class MessageModel extends Model
     public $primaryKey = 'id';
 
     public $fillable = [
-        'user_id', 'title', 'content', 'reply_count'
+        'user_id', 'title', 'content', 'reply_count', 'click_count'
     ];
 
     /*protected $appends = ['username'];

@@ -101,8 +101,8 @@ class MessagePS
     {
         //$message_info['message'] = MessageModel::where('id', $request['id'])->get();
         $message = new MessageStorageDS();
-        $message->put($request['id']);
-        $message_info['message'] = $message->get($request['id']);
+        $message->putById($request['id']);
+        $message_info['message'] = $message->getById($request['id']);
         $user = UserModel::find(MessageModel::find($request['id'])->user_id)->name;
         $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
         //$reply = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->paginate(2);
