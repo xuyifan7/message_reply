@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class MessageCreateRequest extends YyfRequest
+class MessageCreateRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,23 +36,4 @@ class MessageCreateRequest extends YyfRequest
         ];
     }
 
-/*    protected function failedValidation(Validator $validator)
-    {
-        if(strpos($validator->getMessageBag()->first(),'|') > 0){
-            list($message, $code) = explode("|", $validator->getMessageBag()->first());
-            throw new HttpResponseException($this->fail($message,$code));
-        }else {
-            $message = $validator->getMessageBag()->first();
-            throw new HttpResponseException($message);
-        }
-    }
-
-    protected function fail($code,  $errors) : JsonResponse{
-        return response()->json(
-            [
-                'code' => $code,
-                'errors' => $errors
-            ]
-        );
-    }*/
 }

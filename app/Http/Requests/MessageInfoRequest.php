@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class MessageInfoRequest extends YyfRequest
+class MessageInfoRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

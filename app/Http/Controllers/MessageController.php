@@ -51,32 +51,14 @@ class MessageController extends Controller
     public function info(MessageInfoRequest $request)
     {
         $data = $request->validated();
-        //$current_url = $request->getUri();
         $result = app(MessagePS::class)->getInfo($data, $data['page'], $data['per_page']);
         return response()->json(['status' => 1, 'msg' => 'messages of one user', 'data' => $result]);
     }
-
-    /*public function replyList($data, $reply_id)
-    {
-        $result = array();
-        foreach ($data as $k => $v) {
-            if (empty($data)) {
-                return '';
-            }
-            if ($v['reply_id'] == $reply_id) {
-                $result[$k] = $v;
-                unset($data[$k]);
-                $result[$k]['replies'] = $this->replyList($data, $v['rid']);
-            }
-        }
-        return $result;
-    }*/
 
     //show one message and one reply , open to show all replies
     public function oneInfo(MessageInfoRequest $request)
     {
         $data = $request->validated();
-        //$current_url = $request->getUri();
         $result = app(MessagePS::class)->getOneInfo($data, $data['page'], $data['per_page']);
         return response()->json(['status' => 1, 'msg' => 'one message info', 'data' => $result]);
     }

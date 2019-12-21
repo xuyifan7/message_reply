@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class ReplyCreateRequest extends YyfRequest
+class ReplyCreateRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

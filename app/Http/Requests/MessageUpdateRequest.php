@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class MessageUpdateRequest extends YyfRequest
+class MessageUpdateRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,24 +36,4 @@ class MessageUpdateRequest extends YyfRequest
             'content.max:255' => '留言内容过长|-19',
         ];
     }
-
-/*    protected function failedValidation(Validator $validator)
-    {
-        if(strpos($validator->getMessageBag()->first(),'|') > 0){
-            list($message, $code) = explode("|", $validator->getMessageBag()->first());
-            throw new HttpResponseException($this->fail($message,$code));
-        }else {
-            $message = $validator->getMessageBag()->first();
-            throw new HttpResponseException($message);
-        }
-    }
-
-    protected function fail($code,  $errors) : JsonResponse{
-        return response()->json(
-            [
-                'code' => $code,
-                'errors' => $errors
-            ]
-        );
-    }*/
 }

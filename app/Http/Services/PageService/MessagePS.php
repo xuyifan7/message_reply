@@ -23,17 +23,6 @@ class MessagePS
         $message = $this->page(MessageModel::latest(), $current_page, $per_page);
         $page_start = $this->offSet($current_page, $per_page);
         $message['message_list'] = MessageModel::latest()->offset($page_start)->limit($per_page)->get()->toArray();
-        /*$total = MessageModel::latest()->count();
-        $last_page = ceil($total / $per_page);
-        if ($current_page > $last_page) {
-            $current_page = $last_page;
-        }
-        $page_start = $this->offSet($current_page, $per_page);
-        $message['message_list'] = MessageModel::latest()->offset($page_start)->limit($per_page)->get()->toArray();
-        $message['current_page'] = $current_page;
-        $message['last_page'] = $last_page;
-        $message['per_page'] = $per_page;
-        $message['total'] = $total;*/
         $user_ids = MessageModel::latest()->pluck('user_id')->unique()->toArray();
         $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
         $user = collect($user)->pluck('uid', 'name')->toArray();
@@ -56,7 +45,6 @@ class MessagePS
         $message_info['message'] = MessageModel::where('id', $request['id'])->get();
         $user = UserModel::find(MessageModel::find($request['id'])->user_id)->name;
         $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
-        //$replies = $this->replyList($data, 0);
         $index = array();
         $rs = array();
         $data_re = $data->toArray();
@@ -69,7 +57,6 @@ class MessagePS
                 $index[$r['reply_id']]['replies'][] = &$r;
             }
         }
-
         $total = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->count();
         $last_page = ceil($total / $per_page);
         if ($current_page > $last_page) {
@@ -83,13 +70,6 @@ class MessagePS
             $v['per_page'] = $per_page;
             $v['total'] = $total;
         }
-        /*$currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $collection = collect($rs);
-        $perPage = 1;
-        $currentPageSearchResults = $collection->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
-        $paginatedSearchResults = new LengthAwarePaginator($currentPageSearchResults, count($collection), $perPage);
-        //$paginatedSearchResults->setPath($current_url);
-        $replies = $paginatedSearchResults;*/
         foreach ($message_info['message'] as $k => $value) {
             $value['name'] = $user;
             $value['replies'] = $replies;
@@ -114,13 +94,6 @@ class MessagePS
         $reply['data'] = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->offset($page_start)->limit($per_page)->get()->toArray();
         foreach ($reply['data'] as $k => &$v) {
             $re_r = collect($data)->whereIn('reply_id', $v['rid'])->first()->toArray();
-            /*//show two
-            $re = collect($data)->whereIn('reply_id', $v['rid'])->toArray();
-            $re_two = array_slice($re, 0, 2);
-            foreach ($re_two as $k => $v) {
-                var_dump($v);echo "\t";
-            }
-            //var_dump($re_two);echo "\t";*/
             if ($v['rid'] == $re_r['reply_id']) {
                 $v['replies'] = $re_r;
             }
@@ -195,20 +168,4 @@ class MessagePS
         $result['total'] = $total;
         return $result;
     }
-
-    /*public function replyList($data, $reply_id)
-    {
-        $result = array();
-        foreach ($data as $k => $v) {
-            if (empty($data)) {
-                return '';
-            }
-            if ($v['reply_id'] == $reply_id) {
-                $result[$k] = $v;
-                unset($data[$k]);
-                $result[$k]['replies'] = $this->replyList($data, $v['rid']);
-            }
-        }
-        return $result;
-    }*/
 }
