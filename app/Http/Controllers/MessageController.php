@@ -88,8 +88,9 @@ class MessageController extends Controller
         return $result;
     }
 
-    /*public function replyRankingList(Request $request)
+    public function replyRankingList(Request $request)
     {
-
-    }*/
+        $result = app(MessagePS::class)->replyRankingList();
+        return response()->json($result);
+    }
 }

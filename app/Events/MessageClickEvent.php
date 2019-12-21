@@ -15,17 +15,17 @@ class MessageClickEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $id;
+    public $ip;
     public $message;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(MessageModel $message, $id)
+    public function __construct(MessageModel $message, $ip)
     {
         $this->message = $message;
-        $this->id = $id;
+        $this->ip = $ip;
     }
 
     /**

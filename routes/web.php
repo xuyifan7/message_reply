@@ -34,6 +34,7 @@ Route::group(['domain' => config('www.message.reply.com')], function ()
         Route::get('info', 'MessageController@info');
         Route::get('one_info', 'MessageController@oneInfo');
         Route::get('open_all_info', 'MessageController@openAllInfo');
+        Route::get('list', 'MessageController@replyRankingList');
     });
 });
 

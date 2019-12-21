@@ -4,6 +4,7 @@
 namespace App\Http\Services\PageService;
 
 
+use App\Events\MessageClickEvent;
 use App\Http\Services\DataService\MessageStorageDS;
 use App\Models\MessageModel;
 use App\Models\ReplyModel;
@@ -103,6 +104,8 @@ class MessagePS
         $message = new MessageStorageDS();
         $message->putById($request['id']);
         $message_info['message'] = $message->getById($request['id']);
+        //$ip = $request->ip;
+        //event(new MessageClickEvent($message_info['message'], $ip));
         $user = UserModel::find(MessageModel::find($request['id'])->user_id)->name;
         $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
         //$reply = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->paginate(2);
@@ -164,6 +167,13 @@ class MessagePS
         return $result;
     }
 
+    public function replyRankingList()
+    {
+        $result = array();
+        $result['status'] = 1;
+        $result['data'] = MessageModel::orderBy('click_count', desc)->get();
+        return $result;
+    }
 
     public function offSet($current_page, $per_page)
     {
