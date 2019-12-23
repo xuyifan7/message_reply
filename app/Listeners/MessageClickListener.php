@@ -24,7 +24,7 @@ class MessageClickListener
     /**
      * Handle the event.
      *
-     * @param  MessageClickEvent $event
+     * @param MessageClickEvent $event
      * @return void
      */
     public function handle(MessageClickEvent $event)

@@ -20,19 +20,28 @@ class MessagePS
         $result = array();
         $result['status'] = 0;
         //$message = MessageModel::latest()->paginate(5);
-        $message = $this->page(MessageModel::latest(), $current_page, $per_page);
+        $data = MessageModel::latest();
+        $message = $this->page($data, $current_page, $per_page);
         $page_start = $this->offSet($current_page, $per_page);
-        $message['message_list'] = MessageModel::latest()->offset($page_start)->limit($per_page)->get()->toArray();
-        $user_ids = MessageModel::latest()->pluck('user_id')->unique()->toArray();
-        $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
-        $user = collect($user)->pluck('uid', 'name')->toArray();
-        foreach ($message['message_list'] as $k => &$v) {
+        //$message['message_list'] = $data->offset($page_start)->limit($per_page)->get()->toArray();
+        $message_list = $data->offset($page_start)->limit($per_page)->get()->keyBy('user_id')->toArray();
+        //dd($message_list);
+        //$message get
+        $user_ids = $data->pluck('user_id')->unique()->toArray();
+        /*$user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
+        $user = collect($user)->pluck('uid', 'name')->toArray();*/
+        //user keyBy
+        $user = UserModel::whereIn('uid', $user_ids)->get()->keyBy('uid')->toArray();
+        dd($user);
+        foreach ($message_list as $k => &$v) {
+            //$user[]
             foreach ($user as $name => $users) {
                 if ($v['user_id'] == $users) {
                     $v['name'] = $name;
                 }
             }
         }
+        $message['message_list'] = $message_list;
         $result['status'] = 1;
         $result['msg'] = "Messages list";
         $result['data'] = $message;
@@ -51,13 +60,13 @@ class MessagePS
         foreach ($data_re as &$r) {
             $index[$r['rid']] = &$r;
             $r['replies'] = [];
-            if ($r['reply_id'] == 0) {
+            if ($r['parent_id'] == 0) {
                 $rs[] = &$r;
             } else {
-                $index[$r['reply_id']]['replies'][] = &$r;
+                $index[$r['parent_id']]['replies'][] = &$r;
             }
         }
-        $total = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->count();
+        $total = ReplyModel::where('message_id', $request['id'])->where('parent_id', 0)->count();
         $last_page = ceil($total / $per_page);
         if ($current_page > $last_page) {
             $current_page = $last_page;
@@ -86,13 +95,13 @@ class MessagePS
         $message_info['message'] = $message->getById($request['id']);
         $user = UserModel::find(MessageModel::find($request['id'])->user_id)->name;
         $data = ReplyModel::where('message_id', $request['id'])->oldest()->get();
-        //$reply = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->paginate(2);
-        $reply = $this->page(ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest(), $current_page, $per_page);
+        //$reply = ReplyModel::where('message_id', $request['id'])->where('parent_id', 0)->oldest()->paginate(2);
+        $reply = $this->page(ReplyModel::where('message_id', $request['id'])->where('parent_id', 0)->oldest(), $current_page, $per_page);
         $page_start = $this->offSet($current_page, $per_page);
-        $reply['data'] = ReplyModel::where('message_id', $request['id'])->where('reply_id', 0)->oldest()->offset($page_start)->limit($per_page)->get()->toArray();
+        $reply['data'] = ReplyModel::where('message_id', $request['id'])->where('parent_id', 0)->oldest()->offset($page_start)->limit($per_page)->get()->toArray();
         foreach ($reply['data'] as $k => &$v) {
-            $re_r = collect($data)->whereIn('reply_id', $v['rid'])->first()->toArray();
-            if ($v['rid'] == $re_r['reply_id']) {
+            $re_r = collect($data)->whereIn('parent_id', $v['rid'])->first()->toArray();
+            if ($v['rid'] == $re_r['parent_id']) {
                 $v['replies'] = $re_r;
             }
         }
@@ -121,10 +130,10 @@ class MessagePS
             foreach ($data_re as &$r) {
                 $index[$r['rid']] = &$r;
                 $r['replies'] = [];
-                if ($r['reply_id'] == $request['rid']) {
+                if ($r['parent_id'] == $request['rid']) {
                     $rs[] = &$r;
                 } else {
-                    $index[$r['reply_id']]['replies'][] = &$r;
+                    $index[$r['parent_id']]['replies'][] = &$r;
                 }
             }
             foreach ($reply_info['reply'] as $k => $v) {

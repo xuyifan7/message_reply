@@ -11,7 +11,7 @@ class ReplyModel extends Model
     public $primaryKey = 'rid';
 
     public $fillable = [
-        'user_id', 'message_id', 'reply_content', 'reply_id', 'r_reply_count'
+        'user_id', 'message_id', 'reply_content', 'parent_id', 'r_reply_count'
     ];
 
 }

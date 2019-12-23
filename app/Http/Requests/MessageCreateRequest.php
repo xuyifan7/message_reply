@@ -22,17 +22,18 @@ class MessageCreateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'title'=>'required|max:40|string',
-            'content'=>'required|string|max:255',
+            'title' => 'required|max:40|string',
+            'content' => 'required|string|max:255',
         ];
     }
+
     public function messages()
     {
         return [
-            'title.required'=>'请输入标题|-16',
-            'title.max'=>'标题长度过长|-17',
-            'content.required'=>'请输入留言内容|-18',
-            'content.max'=>'留言内容过长|-19',
+            'title.required' => '请输入标题|-16',
+            'title.max' => '标题长度过长|-17',
+            'content.required' => '请输入留言内容|-18',
+            'content.max' => '留言内容过长|-19',
         ];
     }
 

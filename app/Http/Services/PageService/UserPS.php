@@ -10,32 +10,26 @@ class UserPS
 {
     public function login(array $request)
     {
-        $user = array();
-        $user['name'] = $request['name'];
-        $user['password'] = Hash::make($request['password']);
-        $user_info = UserModel::where('name', $user['name'])->first();
-        $result = array();
-        $result['status'] = 0;
-        if (!$user_info) {
-            $result['msg'] = "用户名不存在!";
-        }
-        if (!Hash::check($request['password'], $user_info->password)) {
-            $result['msg'] = "密码有误，请重新输入!";
-        } else {
-            $user_in = array('uid' => $user_info->uid, 'username' => $user_info->name);
-            //$request->session()->put('user', $user_in);
-            session(['user' => $user_in]);
-            $result['status'] = 1;
-            $result['msg'] = "login success！";
-            $result['data'] = $user_info;
-        }
-        return $result;
-    }
-
-    public function logout($request)
-    {
-        if ($request->session()->has('user')) {
-            $request->session()->forget('user');
+        try {
+            $name = $request['name'];
+            //$password = Hash::make($request['password']);
+            //dd(strlen($password));
+            $user_info = UserModel::where('name', $name)->first();
+            $result = array();
+            if (!$user_info) {
+                throw new \Exception('The username does not exist!');
+            } elseif (!Hash::check($request['password'], $user_info->password)) {
+                throw new \Exception('The password is wrong, please type it!');
+            } else {
+                $user_in = array('uid' => $user_info->uid, 'username' => $user_info->name);
+                session(['user' => $user_in]);
+                $result['status'] = 1;
+                $result['msg'] = 'login success!';
+                $result['data'] = $user_info;
+            }
+            return $result;
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
         }
     }
 }

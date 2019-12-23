@@ -9,9 +9,6 @@ use App\Http\Requests\MessageUpdateRequest;
 use App\Http\Requests\OpenAllInfoRequest;
 use App\Http\Services\DataService\MessageDS;
 use App\Http\Services\PageService\MessagePS;
-use App\Models\MessageModel;
-use App\Models\ReplyModel;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class MessageController extends Controller
@@ -19,8 +16,7 @@ class MessageController extends Controller
     public function create(MessageCreateRequest $request)
     {
         $data = $request->validated();
-        //$user = $request->user();
-        $user = session('user');
+        $user = $request->getUser();
         $data['user_id'] = $user['uid'];
         $result = app(MessageDS::class)->messageCreate($data);
         return response()->json(['status' => 1, 'msg' => 'create message success！', 'data' => $result]);
@@ -29,7 +25,7 @@ class MessageController extends Controller
     public function update(MessageUpdateRequest $request, $id)
     {
         $data = $request->validated();
-        $user = session('user');
+        $user = $request->getUser();
         $data['user_id'] = $user['uid'];
         $result = app(MessageDS::class)->messageUpdate($data, $id);
         return response()->json($result);

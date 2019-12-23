@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Services\PageService\UserPS;
-use Illuminate\Http\Request;
 use App\Http\Services\DataService\UserDS;
 
 class UserController extends Controller
@@ -25,9 +24,9 @@ class UserController extends Controller
         return response()->json($result);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        app(UserPS::class)->logout($request);
+        session()->forget('user');
         return response()->json(['status' => 1, 'msg' => 'logout success！']);
     }
 

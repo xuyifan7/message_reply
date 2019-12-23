@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserDS
 {
-    public function addUser(array $request)
+    public function addUser($request)
     {
         $user = new UserModel;
         $user->name = $request['name'];
@@ -16,6 +16,5 @@ class UserDS
         $user->save();
         return $user->toArray();
     }
-
 }
 

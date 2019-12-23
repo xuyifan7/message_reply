@@ -8,6 +8,13 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BaseRequest extends FormRequest
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = session('user');
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,4 +36,8 @@ class BaseRequest extends FormRequest
         throw new HttpResponseException(response()->json(['code' => $code, 'errors' => $message]));
     }
 
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

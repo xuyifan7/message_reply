@@ -17,6 +17,7 @@ class MessageClickEvent
 
     public $ip;
     public $message;
+
     /**
      * Create a new event instance.
      *

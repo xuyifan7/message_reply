@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\MessageController;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MessageModel extends Model
 {
+    use SoftDeletes;
 
     protected $table = 'message';
+
+    protected $dates = ['deleted_at'];
 
     public $primaryKey = 'id';
 

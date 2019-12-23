@@ -13,7 +13,8 @@
 
 //Route::get('/', 'IndexController@index');
 
-Route::group(['domain' => config('www.message.reply.com')], function ()
+//dd(config('app.web_url'));
+Route::group(['domain' => config('app.web_url')], function ()
 {
     Route::group(['prefix' => 'user'], function ()
     {
