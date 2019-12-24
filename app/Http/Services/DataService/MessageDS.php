@@ -50,8 +50,8 @@ class MessageDS
         if (!is_null($message)) {
             DB::beginTransaction();
             try {
-                $res = $message->delete();
-                if (!$res->trashed()) {
+                $message->delete();
+                if (!$message->trashed()) {
                     throw new \Exception("delete message failed!", 0);
                 }
                 /*else {
@@ -61,8 +61,8 @@ class MessageDS
                 $reply = ReplyModel::where('message_id', $id);
                 //dd($reply->count());
                 if ($reply->count() > 0) {
-                    $res_reply = $reply->delete();
-                    if (!$res_reply->trashed()) {
+                    $reply->delete();
+                    if (!$reply->trashed()) {
                         throw new \Exception("delete message's reply failed!", 0);
                     }
                 }

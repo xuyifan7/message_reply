@@ -78,16 +78,16 @@ class ReplyDS
                 $message_id = $reply->message_id;
                 $parent_id = $reply->parent_id;
                 $replies = ReplyModel::where('parent_id', $rid);
-                $res = $reply->delete();
-                if (!$res) {
+                $reply->delete();
+                if (!$reply->trashed()) {
                     throw new \Exception("delete reply failed!", 0);
                 } else {
                     $result['status'] = 1;
                     $result['msg'] = "delete reply success!";
                 }
                 if ($replies->count() > 0) {
-                    $r_res = $replies->delete();
-                    if (!$r_res) {
+                    $replies->delete();
+                    if (!$replies->trashed()) {
                         throw new \Exception("delete replies failed!", 0);
                     } else {
                         $result['status'] = 1;

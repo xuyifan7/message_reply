@@ -3,10 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ReplyModel extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'reply';
+
+    protected $dates = ['deleted_at'];
 
     public $primaryKey = 'rid';
 
