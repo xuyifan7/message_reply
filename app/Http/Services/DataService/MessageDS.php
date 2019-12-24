@@ -54,10 +54,6 @@ class MessageDS
                 if (!$message->trashed()) {
                     throw new \Exception("delete message failed!", 0);
                 }
-                /*else {
-                    $result['status'] = 1;
-                    $result['msg'] = "delete message success!";
-                }*/
                 $reply = ReplyModel::where('message_id', $id);
                 //dd($reply->count());
                 if ($reply->count() > 0) {

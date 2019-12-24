@@ -43,12 +43,9 @@ class MessagePS
         try {
             $mes = MessageModel::find($request['id']);
             $uid = $mes->user_id;
-            $user = UserModel::find($uid);
-            if (!$user) {
-                throw new \Exception("user not exist!");
-            }
+            $user = UserModel::findOrFail($uid);
             $reply = ReplyModel::where('message_id', $request['id']);
-            $data = $reply->latest()->get();
+            $data = $reply->oldest()->get();
             $index = array();
             $rs = array();
             $data_re = $data->toArray();
@@ -69,16 +66,12 @@ class MessagePS
             $page_start = $this->offSet($current_page, $per_page);
             $replies = array_slice($rs, $page_start, $per_page);
             foreach ($replies as $k => &$v) {
-                $v['current_page'] = $current_page;
                 $v['last_page'] = $last_page;
-                $v['per_page'] = $per_page;
                 $v['total'] = $total;
             }
-            $message = $mes->get();
-            foreach ($message as $k => $value) {
-                $value['name'] = $user->name;
-                $value['replies'] = $replies;
-            }
+            $message = $mes->toArray();
+            $message['name'] = $user->name;
+            $message['replies'] = $replies;
             $message_info['message'] = $message;
             return $message_info;
         } catch (\Exception $exception) {
@@ -97,7 +90,7 @@ class MessagePS
             $message->putById($request['id']);
             $mes = $message->getById($request['id']);
         }
-        $user = UserModel::find($mes->pluck('user_id')->first())->name;
+        $user = UserModel::findOrFail($mes->pluck('user_id')->first())->name;
         $re = ReplyModel::where('message_id', $request['id']);
         $data = $re->latest()->get();
         //$reply = ReplyModel::where('message_id', $request['id'])->where('parent_id', 0)->oldest()->paginate(2);
@@ -105,11 +98,8 @@ class MessagePS
         $page_start = $this->offSet($current_page, $per_page);
         $reply['data'] = $re->where('parent_id', 0)->oldest()->offset($page_start)->limit($per_page)->get()->toArray();
         foreach ($reply['data'] as $k => &$v) {
-            $re_r = collect($data)->whereIn('parent_id', $v['rid'])->keyBy('parent_id')->first()->toArray();
-            //$v['replies'] = $re_r[$v['rid']];
-            if ($v['rid'] == $re_r['parent_id']) {
-                $v['replies'] = $re_r;
-            }
+            $re_r = collect($data)->whereIn('parent_id', $v['rid'])->keyBy('parent_id')->toArray();
+            $v['replies'] = $re_r[$v['rid']];
         }
         foreach ($mes as $k => $value) {
             $value['name'] = $user;
