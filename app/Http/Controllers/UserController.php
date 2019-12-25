@@ -26,7 +26,7 @@ class UserController extends Controller
 
     public function logout()
     {
-        session()->forget('user');
+        session()->flush();
         return response()->json(['status' => 1, 'msg' => 'logout success！']);
     }
 

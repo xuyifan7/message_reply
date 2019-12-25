@@ -18,16 +18,16 @@ class MessagePS
     public function getMessageList($current_page, $per_page)
     {
         $result = array();
-        $result['status'] = 0;
-        $data = MessageModel::latest();
-        $message = $this->page($data, $current_page, $per_page);
+        $mes = new MessageModel();
+        $message = $this->page($mes, $current_page, $per_page);
         $page_start = $this->offSet($current_page, $per_page);
-        $message_list = $data->offset($page_start)->limit($per_page)->get()->toArray();
-        $user_ids = $data->pluck('user_id')->unique()->toArray();
+        $message_list = $mes->offset($page_start)->limit($per_page)->latest()->get()->toArray();
+        $user_ids = collect($message_list)->pluck('user_id')->unique()->toArray();
         $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
-        $user = collect($user)->pluck('name', 'uid')->toArray();
+        //$user = collect($user)->pluck('name', 'uid')->toArray();
+        $user = collect($user)->keyBy('uid')->toArray();
         foreach ($message_list as $k => &$v) {
-            $v['name'] = $user[$v['user_id']];
+            $v['name'] = $user[$v['user_id']]['name'];
         }
         $message['message_list'] = $message_list;
         $result['status'] = 1;
@@ -41,15 +41,14 @@ class MessagePS
     {
         //$message_info['message'] = MessageModel::find($request['id'])->get();
         try {
-            $mes = MessageModel::find($request['id']);
+            $mes = MessageModel::findOrFail($request['id']);
             $uid = $mes->user_id;
             $user = UserModel::findOrFail($uid);
             $reply = ReplyModel::where('message_id', $request['id']);
-            $data = $reply->oldest()->get();
             $index = array();
             $rs = array();
-            $data_re = $data->toArray();
-            foreach ($data_re as &$r) {
+            $data = $reply->latest()->get()->toArray();
+            foreach ($data as &$r) {
                 $index[$r['rid']] = &$r;
                 $r['replies'] = [];
                 if ($r['parent_id'] == 0) {
@@ -58,20 +57,18 @@ class MessagePS
                     $index[$r['parent_id']]['replies'][] = &$r;
                 }
             }
-            $total = $reply->where('parent_id', 0)->count();
+            $total = collect($data)->where('parent_id', 0)->count();
             $last_page = ceil($total / $per_page);
             if ($current_page > $last_page) {
                 $current_page = $last_page;
             }
             $page_start = $this->offSet($current_page, $per_page);
             $replies = array_slice($rs, $page_start, $per_page);
-            foreach ($replies as $k => &$v) {
-                $v['last_page'] = $last_page;
-                $v['total'] = $total;
-            }
             $message = $mes->toArray();
             $message['name'] = $user->name;
-            $message['replies'] = $replies;
+            $message['replies']['data'] = $replies;
+            $message['replies']['last_page'] = $last_page;
+            $message['replies']['total'] = $total;
             $message_info['message'] = $message;
             return $message_info;
         } catch (\Exception $exception) {
@@ -90,17 +87,21 @@ class MessagePS
             $message->putById($request['id']);
             $mes = $message->getById($request['id']);
         }
+        /*$m = MessageModel::find($request['id']);
+        $ip = request()->getClientIp();
+        event(new MessageClickEvent($m, $ip));*/
         $user = UserModel::findOrFail($mes->pluck('user_id')->first())->name;
         $re = ReplyModel::where('message_id', $request['id']);
-        $data = $re->latest()->get();
         //$reply = ReplyModel::where('message_id', $request['id'])->where('parent_id', 0)->oldest()->paginate(2);
-        $reply = $this->page($re->where('parent_id', 0)->latest(), $current_page, $per_page);
+        $data = $re->where('parent_id', 0);
+        $reply = $this->page($data, $current_page, $per_page);
         $page_start = $this->offSet($current_page, $per_page);
-        $reply['data'] = $re->where('parent_id', 0)->oldest()->offset($page_start)->limit($per_page)->get()->toArray();
-        foreach ($reply['data'] as $k => &$v) {
-            $re_r = collect($data)->whereIn('parent_id', $v['rid'])->keyBy('parent_id')->toArray();
+        $reply['data'] = $data->offset($page_start)->limit($per_page)->get()->toArray();
+        //dd($reply['data']);
+        /*foreach ($reply['data'] as $k => $v) {
+            $re_r = $re->latest()->whereIn('parent_id', $v['rid'])->keyBy('parent_id')->toArray();
             $v['replies'] = $re_r[$v['rid']];
-        }
+        }*/
         foreach ($mes as $k => $value) {
             $value['name'] = $user;
             $value['replies'] = $reply;
@@ -114,34 +115,43 @@ class MessagePS
         $result = array();
         $result['status'] = 0;
         $reply = ReplyModel::find($request['rid']);
-        $mes_id = $reply->message_id;
+        if ($reply->count() == 0) {
+            return [];
+        } else {
+            $reply = $reply->toArray();
+        }
+        //$mes_id = collect($reply)->where('parent_id', 0)->pluck('message_id');dd($mes_id);
+        /*$reply = ReplyModel::where('message_id', $request['id']);
+        //dd($reply->message_id);
+        //$mes_id = collect($reply)->message_id;
         $id = intval($request['id']);
         if ($id != $mes_id) {
             $result['msg'] = "请输入该条留言下正确的回复ID!";
+        } else {*/
+        $user = UserModel::find($reply['user_id']);
+        if ($user->count() == 0) {
+            return [];
         } else {
-            $reply_info['reply'] = $reply->get();
-            $user = UserModel::find($reply->pluck('user_id')->first())->name;
-            $data = ReplyModel::where('message_id', $request['id'])->latest()->get();
-            $index = array();
-            $rs = array();
-            $data_re = $data->toArray();
-            foreach ($data_re as &$r) {
-                $index[$r['rid']] = &$r;
-                $r['replies'] = [];
-                if ($r['parent_id'] == $request['rid']) {
-                    $rs[] = &$r;
-                } else {
-                    $index[$r['parent_id']]['replies'][] = &$r;
-                }
-            }
-            foreach ($reply_info['reply'] as $k => $v) {
-                $v['name'] = $user;
-                $v['replies'] = $rs;
-            }
-            $result['status'] = 1;
-            $result['msg'] = "open all info for one reply";
-            $result['data'] = $reply_info;
+            $user = $user->name;
         }
+        $data = ReplyModel::where('message_id', $request['id'])->latest()->get()->toArray();
+        $index = array();
+        $rs = array();
+        foreach ($data as &$r) {
+            $index[$r['rid']] = &$r;
+            $r['replies'] = [];
+            if ($r['parent_id'] == $request['rid']) {
+                $rs[] = &$r;
+            } else {
+                $index[$r['parent_id']]['replies'][] = &$r;
+            }
+        }
+        $reply_info['reply'] = $reply;
+        $reply_info['reply']['name'] = $user;
+        $reply_info['reply']['replies'] = $rs;
+        $result['status'] = 1;
+        $result['msg'] = "open all info for one reply";
+        $result['data'] = $reply_info;
         return $result;
     }
 
