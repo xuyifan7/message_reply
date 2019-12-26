@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ApiResponse;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Services\PageService\UserPS;
@@ -14,20 +15,20 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $result = app(UserDS::class)->addUser($data);
-        return response()->json(['status' => 1, 'msg' => 'register success！', 'data' => $result]);
+        return $result ? app(ApiResponse::class)->success($result, 'register success！') : app(ApiResponse::class)->error([]);
     }
 
     public function login(LoginRequest $request)
     {
         $data = $request->validated();
         $result = app(UserPS::class)->login($data);
-        return response()->json($result);
+        return app(ApiResponse::class)->success($result, 'login success！');
     }
 
     public function logout()
     {
         session()->flush();
-        return response()->json(['status' => 1, 'msg' => 'logout success！']);
+        return app(ApiResponse::class)->success([], 'logout success！');
     }
 
 }

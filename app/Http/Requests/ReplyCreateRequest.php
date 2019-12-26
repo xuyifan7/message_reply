@@ -24,7 +24,7 @@ class ReplyCreateRequest extends BaseRequest
         return [
             'message_id' => 'required|exists:message,id',
             'reply_content' => 'required|string|max:255',
-            'parent_id' => 'required|min:1|max:20|exists:reply,rid',
+            'parent_id' => 'sometimes|min:1|exists:reply,rid',
         ];
     }
 

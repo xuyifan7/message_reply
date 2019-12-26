@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -38,6 +40,9 @@ class Handler extends ExceptionHandler
     {
         /*var_dump($exception->getTraceAsString(),$exception->getMessage());
         die;*/
+        if ($exception instanceof ArgumentNotExistExceptions) {
+            \Log::error('Exception,code=' . $exception->getCode() . ',message=' . $exception->getMessage() . ',file=' . $exception->getFile() . ',line=' . $exception->getLine());
+        }
         parent::report($exception);
     }
 
@@ -50,6 +55,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ArgumentNotExistExceptions) {
+            return response()->json(['code' => $exception->getCode(), 'message' => $exception->getMessage()]);
+        }
         return parent::render($request, $exception);
     }
 }

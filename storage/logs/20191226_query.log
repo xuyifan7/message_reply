@@ -1,0 +1,233 @@
+2019-12-26 02:55:53: select count(*) as aggregate from `user` where `name` = 'xuyifan7' ---> time:11.98
+2019-12-26 02:55:53: select count(*) as aggregate from `user` where `email` = 'xuyifan7@163.com' ---> time:0.72
+2019-12-26 02:56:07: select count(*) as aggregate from `user` where `name` = 'xuyifan8' ---> time:5.28
+2019-12-26 02:56:07: select count(*) as aggregate from `user` where `email` = 'xuyifan8@163.com' ---> time:0.34
+2019-12-26 02:56:07: insert into `user` (`name`, `email`, `password`, `updated_at`, `created_at`) values ('xuyifan8', 'xuyifan8@163.com', '$2y$10$7VDj8dYukyndvs8GUJM.KOYjeRMfsYXExMexpBnP8tS7aUmN1Cqc6', '2019-12-26 02:56:07', '2019-12-26 02:56:07') ---> time:2.64
+2019-12-26 03:01:09: select count(*) as aggregate from `user` where `name` = 'xuyifan8' ---> time:9.77
+2019-12-26 03:01:09: select count(*) as aggregate from `user` where `email` = 'xuyifan8@163.com' ---> time:0.28
+2019-12-26 03:01:40: select count(*) as aggregate from `user` where `name` = 'xuyifan9' ---> time:4.52
+2019-12-26 03:01:40: select count(*) as aggregate from `user` where `email` = 'xuyifan9@163.com' ---> time:0.52
+2019-12-26 03:01:40: insert into `user` (`name`, `email`, `password`, `updated_at`, `created_at`) values ('xuyifan9', 'xuyifan9@163.com', '$2y$10$xSlImRRFuvs76f9emY6N5uKMakoxkqu1NsZdXGuRmGzBBVMGE8Mzu', '2019-12-26 03:01:40', '2019-12-26 03:01:40') ---> time:2.32
+2019-12-26 03:04:31: select count(*) as aggregate from `user` where `name` = 'xuyifan9' ---> time:5.15
+2019-12-26 03:04:31: select count(*) as aggregate from `user` where `email` = 'xuyifan9@163.com' ---> time:0.44
+2019-12-26 03:05:13: select count(*) as aggregate from `user` where `name` = 'xuyifan7' ---> time:4.63
+2019-12-26 03:05:13: select count(*) as aggregate from `user` where `email` = 'xuyifan7@163.com' ---> time:0.35
+2019-12-26 03:06:22: select count(*) as aggregate from `user` where `name` = 'xuyifan8' ---> time:2.67
+2019-12-26 03:06:22: select count(*) as aggregate from `user` where `email` = 'xuyifan8@163.com' ---> time:0.28
+2019-12-26 03:06:22: insert into `user` (`name`, `email`, `password`, `updated_at`, `created_at`) values ('xuyifan8', 'xuyifan8@163.com', '$2y$10$5EBc4p0.9bfRCM6Tg8GHye3jd1Gb4Grr2SyQnRCq9xyXcG..nt6Yy', '2019-12-26 03:06:22', '2019-12-26 03:06:22') ---> time:3.45
+2019-12-26 03:09:27: select count(*) as aggregate from `user` where `name` = 'xuyifan8' ---> time:7.69
+2019-12-26 03:09:27: select count(*) as aggregate from `user` where `email` = 'xuyifan8@163.com' ---> time:0.32
+2019-12-26 03:09:44: select count(*) as aggregate from `user` where `name` = 'xuyifan8' ---> time:4.79
+2019-12-26 03:09:44: select count(*) as aggregate from `user` where `email` = 'xuyifan8@163.com' ---> time:0.31
+2019-12-26 03:09:44: insert into `user` (`name`, `email`, `password`, `updated_at`, `created_at`) values ('xuyifan8', 'xuyifan8@163.com', '$2y$10$9MOJ.dwqybcIr2dTdvxrfukGaCA.fRAKB7Zk6NfL2ELR/gsVtiFeG', '2019-12-26 03:09:44', '2019-12-26 03:09:44') ---> time:1.84
+2019-12-26 03:11:29: select count(*) as aggregate from `user` where `name` = 'xuyifan8' ---> time:6.82
+2019-12-26 03:11:29: select count(*) as aggregate from `user` where `email` = 'xuyifan8@163.com' ---> time:0.26
+2019-12-26 03:11:29: insert into `user` (`name`, `email`, `password`, `updated_at`, `created_at`) values ('xuyifan8', 'xuyifan8@163.com', '$2y$10$4zZqztULdac6KlC2RipXcOp7l2FDjfWO93VGKdM1//U0EuUNfoZby', '2019-12-26 03:11:29', '2019-12-26 03:11:29') ---> time:2.35
+2019-12-26 03:13:41: select count(*) as aggregate from `user` where `name` = 'xuyifan8' ---> time:5.58
+2019-12-26 03:13:41: select count(*) as aggregate from `user` where `email` = 'xuyifan8@163.com' ---> time:0.32
+2019-12-26 03:13:41: insert into `user` (`name`, `email`, `password`, `updated_at`, `created_at`) values ('xuyifan8', 'xuyifan8@163.com', '$2y$10$wiFa9zfI9BT86F2GE5qP5uVAwIW7DiigG56UBaA2ttJ/CDoAMSZ6a', '2019-12-26 03:13:41', '2019-12-26 03:13:41') ---> time:1.46
+2019-12-26 03:16:10: select * from `user` where `name` = '12345' limit 1 ---> time:5.4
+2019-12-26 03:17:05: select * from `user` where `name` = '12345' limit 1 ---> time:6.02
+2019-12-26 03:18:23: select * from `user` where `name` = '12345' limit 1 ---> time:15.44
+2019-12-26 03:20:56: select * from `user` where `name` = '12345' limit 1 ---> time:4.32
+2019-12-26 03:21:04: select count(*) as aggregate from `message` where `id` = '9' ---> time:5.54
+2019-12-26 03:21:04: select count(*) as aggregate from `reply` where `rid` = '78' ---> time:0.62
+2019-12-26 03:21:04: select * from `reply` where `reply`.`rid` = '78' and `reply`.`deleted_at` is null limit 1 ---> time:0.42
+2019-12-26 03:21:04: select * from `reply` where `reply`.`deleted_at` is null ---> time:0.49
+2019-12-26 03:21:04: select `user_id` from `reply` where `reply`.`deleted_at` is null ---> time:0.33
+2019-12-26 03:21:04: select * from `user` where `user`.`uid` = 18 limit 1 ---> time:0.27
+2019-12-26 03:21:04: select * from `reply` where `message_id` = '9' and `reply`.`deleted_at` is null order by `created_at` desc ---> time:0.36
+2019-12-26 03:51:24: select * from `user` where `name` = '12345111' limit 1 ---> time:5.51
+2019-12-26 03:52:12: select * from `user` where `name` = '12345111' limit 1 ---> time:5.55
+2019-12-26 03:58:25: select * from `user` where `name` = '12345111' limit 1 ---> time:5.36
+2019-12-26 03:58:56: select * from `user` where `name` = '111111111' limit 1 ---> time:3.41
+2019-12-26 04:01:20: select * from `user` where `name` = '111111111' limit 1 ---> time:4.82
+2019-12-26 04:02:18: select * from `user` where `name` = '111111111' limit 1 ---> time:5.68
+2019-12-26 04:04:06: select * from `user` where `name` = '12345' limit 1 ---> time:5.31
+2019-12-26 06:10:37: select * from `user` where `name` = '12345' limit 1 ---> time:9.06
+2019-12-26 06:10:43: select * from `user` where `name` = '12345' limit 1 ---> time:4.79
+2019-12-26 06:45:35: select count(*) as aggregate from `message` where `id` = '9' ---> time:5.57
+2019-12-26 06:45:35: select count(*) as aggregate from `reply` where `rid` = '81' ---> time:0.33
+2019-12-26 06:47:00: select count(*) as aggregate from `message` where `id` = '9' ---> time:4.36
+2019-12-26 06:47:00: select count(*) as aggregate from `reply` where `rid` = '81' ---> time:0.41
+2019-12-26 06:47:00: select * from `reply` where (`rid` = '81' and `message_id` = '9') and `reply`.`deleted_at` is null ---> time:0.51
+2019-12-26 06:49:46: select count(*) as aggregate from `message` where `id` = '9' ---> time:17.92
+2019-12-26 06:49:46: select count(*) as aggregate from `reply` where `rid` = '81' ---> time:1.32
+2019-12-26 06:49:46: select * from `reply` where (`rid` = '81' and `message_id` = '9') and `reply`.`deleted_at` is null ---> time:0.97
+2019-12-26 07:24:32: select count(*) as aggregate from `message` where `id` = '9' ---> time:7.77
+2019-12-26 07:24:32: select count(*) as aggregate from `reply` where `rid` = '81' ---> time:0.25
+2019-12-26 07:24:32: select * from `reply` where (`rid` = '81' and `message_id` = '9') and `reply`.`deleted_at` is null ---> time:0.36
+2019-12-26 07:27:26: select * from `reply` where `reply`.`rid` = 118 and `reply`.`deleted_at` is null limit 1 ---> time:4.8
+2019-12-26 07:27:26: update `reply` set `reply_content` = 'reply1 reply1 up', `updated_at` = '2019-12-26 07:27:26' where `rid` = 118 ---> time:2.55
+2019-12-26 07:28:27: select * from `reply` where `reply`.`rid` = 118 and `reply`.`deleted_at` is null limit 1 ---> time:6.97
+2019-12-26 07:29:25: select * from `reply` where `reply`.`rid` = 118 and `reply`.`deleted_at` is null limit 1 ---> time:7.14
+2019-12-26 07:30:11: select * from `reply` where `reply`.`rid` = 118 and `reply`.`deleted_at` is null limit 1 ---> time:20.41
+2019-12-26 07:45:42: select * from `user` where `name` = '12345' limit 1 ---> time:5.75
+2019-12-26 07:45:50: select * from `reply` where `reply`.`rid` = 106 and `reply`.`deleted_at` is null limit 1 ---> time:4.24
+2019-12-26 07:46:39: select count(*) as aggregate from `message` where `id` = '9' ---> time:4.42
+2019-12-26 07:46:39: select count(*) as aggregate from `reply` where `rid` = '81' ---> time:0.32
+2019-12-26 07:46:39: select * from `reply` where (`rid` = '81' and `message_id` = '9') and `reply`.`deleted_at` is null ---> time:0.38
+2019-12-26 07:49:01: select * from `reply` where `reply`.`rid` = 106 and `reply`.`deleted_at` is null limit 1 ---> time:5.91
+2019-12-26 07:49:36: select * from `reply` where `reply`.`rid` = 106 and `reply`.`deleted_at` is null limit 1 ---> time:4.31
+2019-12-26 07:50:07: select * from `reply` where `reply`.`rid` = 118 and `reply`.`deleted_at` is null limit 1 ---> time:3.48
+2019-12-26 07:50:07: update `reply` set `reply_content` = 'replyup', `updated_at` = '2019-12-26 07:50:07' where `rid` = 118 ---> time:2.83
+2019-12-26 08:02:08: select * from `reply` where `reply`.`rid` = 118 and `reply`.`deleted_at` is null limit 1 ---> time:6.43
+2019-12-26 08:02:18: select * from `reply` where `reply`.`rid` = 118 and `reply`.`deleted_at` is null limit 1 ---> time:4.37
+2019-12-26 08:02:59: select * from `reply` where `reply`.`rid` = 118 and `reply`.`deleted_at` is null limit 1 ---> time:4.02
+2019-12-26 08:04:04: select count(*) as aggregate from `message` where `id` = '65' ---> time:3.09
+2019-12-26 08:04:04: select count(*) as aggregate from `reply` where `rid` = '0' ---> time:0.26
+2019-12-26 08:40:59: select count(*) as aggregate from `message` where `id` = '65' ---> time:5.58
+2019-12-26 08:40:59: select count(*) as aggregate from `reply` where `rid` = '0' ---> time:0.32
+2019-12-26 08:41:00: select count(*) as aggregate from `message` where `id` = '65' ---> time:4.65
+2019-12-26 08:41:00: select count(*) as aggregate from `reply` where `rid` = '0' ---> time:0.34
+2019-12-26 08:44:00: select count(*) as aggregate from `message` where `id` = '65' ---> time:5.37
+2019-12-26 08:44:00: select count(*) as aggregate from `reply` where `rid` = '0' ---> time:0.31
+2019-12-26 08:44:02: select count(*) as aggregate from `message` where `id` = '65' ---> time:5.58
+2019-12-26 08:44:02: select count(*) as aggregate from `reply` where `rid` = '0' ---> time:0.29
+2019-12-26 08:44:07: select count(*) as aggregate from `message` where `id` = '65' ---> time:3.24
+2019-12-26 08:44:07: insert into `reply` (`message_id`, `reply_content`, `user_id`, `updated_at`, `created_at`) values ('65', 'test', 18, '2019-12-26 08:44:07', '2019-12-26 08:44:07') ---> time:0.32
+2019-12-26 08:44:07: select * from `message` where `message`.`id` = '65' and `message`.`deleted_at` is null limit 1 ---> time:0.35
+2019-12-26 08:44:07: update `message` set `reply_count` = `reply_count` + 1, `updated_at` = '2019-12-26 08:44:07' where `id` = 65 and `message`.`deleted_at` is null ---> time:0.35
+2019-12-26 08:45:21: select count(*) as aggregate from `message` where `id` = '65' ---> time:4.97
+2019-12-26 08:45:21: select count(*) as aggregate from `reply` where `rid` = '118' ---> time:0.33
+2019-12-26 08:45:21: select * from `reply` where (`rid` = '118' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.59
+2019-12-26 08:45:21: insert into `reply` (`message_id`, `reply_content`, `parent_id`, `user_id`, `updated_at`, `created_at`) values ('65', 'test', '118', 18, '2019-12-26 08:45:21', '2019-12-26 08:45:21') ---> time:0.7
+2019-12-26 08:45:21: select * from `message` where `message`.`id` = '65' and `message`.`deleted_at` is null limit 1 ---> time:0.47
+2019-12-26 08:45:21: update `message` set `reply_count` = `reply_count` + 1, `updated_at` = '2019-12-26 08:45:21' where `id` = 65 and `message`.`deleted_at` is null ---> time:0.45
+2019-12-26 08:48:48: select * from `reply` where `reply`.`rid` = '120' and `reply`.`deleted_at` is null limit 1 ---> time:5.11
+2019-12-26 08:48:48: update `reply` set `deleted_at` = '2019-12-26 08:48:48', `updated_at` = '2019-12-26 08:48:48' where `rid` = 120 ---> time:2.75
+2019-12-26 08:48:48: select count(*) as aggregate from `reply` where `parent_id` = '120' and `reply`.`deleted_at` is null ---> time:0.29
+2019-12-26 08:48:48: select * from `message` where `message`.`id` = 65 and `message`.`deleted_at` is null limit 1 ---> time:0.37
+2019-12-26 08:48:48: update `message` set `reply_count` = `reply_count` - 1, `updated_at` = '2019-12-26 08:48:48' where `id` = 65 and `message`.`deleted_at` is null ---> time:1.24
+2019-12-26 08:48:48: select * from `reply` where `reply`.`rid` = 118 and `reply`.`deleted_at` is null limit 1 ---> time:0.32
+2019-12-26 08:48:48: update `reply` set `r_reply_count` = `r_reply_count` - 1, `updated_at` = '2019-12-26 08:48:48' where `rid` = 118 and `reply`.`deleted_at` is null ---> time:1.8
+2019-12-26 09:46:57: select * from `user` where `name` = '12345' limit 1 ---> time:5.62
+2019-12-26 09:48:26: select * from `reply` where `reply`.`rid` = '120' and `reply`.`deleted_at` is null limit 1 ---> time:5.04
+2019-12-26 09:50:13: select count(*) as aggregate from `message` where `id` = '65' ---> time:5.04
+2019-12-26 09:50:13: insert into `reply` (`message_id`, `reply_content`, `user_id`, `updated_at`, `created_at`) values ('65', 'test', 18, '2019-12-26 09:50:13', '2019-12-26 09:50:13') ---> time:0.31
+2019-12-26 09:50:13: select * from `message` where `message`.`id` = '65' and `message`.`deleted_at` is null limit 1 ---> time:0.29
+2019-12-26 09:50:13: update `message` set `reply_count` = `reply_count` + 1, `updated_at` = '2019-12-26 09:50:13' where `id` = 65 and `message`.`deleted_at` is null ---> time:0.67
+2019-12-26 09:50:26: select * from `reply` where `reply`.`rid` = '121' and `reply`.`deleted_at` is null limit 1 ---> time:2.9
+2019-12-26 09:50:26: update `reply` set `deleted_at` = '2019-12-26 09:50:26', `updated_at` = '2019-12-26 09:50:26' where `rid` = 121 ---> time:1.43
+2019-12-26 09:50:26: select count(*) as aggregate from `reply` where `parent_id` = '121' and `reply`.`deleted_at` is null ---> time:0.34
+2019-12-26 09:50:26: select * from `message` where `message`.`id` = 65 and `message`.`deleted_at` is null limit 1 ---> time:0.29
+2019-12-26 09:50:26: update `message` set `reply_count` = `reply_count` - 1, `updated_at` = '2019-12-26 09:50:26' where `id` = 65 and `message`.`deleted_at` is null ---> time:1.84
+2019-12-26 09:52:52: select count(*) as aggregate from `message` where `id` = '65' ---> time:6.11
+2019-12-26 09:52:52: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.25
+2019-12-26 09:52:52: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.38
+2019-12-26 09:54:27: select count(*) as aggregate from `message` where `id` = '65' ---> time:5.77
+2019-12-26 09:54:27: insert into `reply` (`message_id`, `reply_content`, `user_id`, `updated_at`, `created_at`) values ('65', 'test', 18, '2019-12-26 09:54:27', '2019-12-26 09:54:27') ---> time:0.32
+2019-12-26 09:54:27: select * from `message` where `message`.`id` = '65' and `message`.`deleted_at` is null limit 1 ---> time:0.36
+2019-12-26 09:54:27: update `message` set `reply_count` = `reply_count` + 1, `updated_at` = '2019-12-26 09:54:27' where `id` = 65 and `message`.`deleted_at` is null ---> time:0.46
+2019-12-26 09:55:03: select * from `reply` where `reply`.`rid` = 122 and `reply`.`deleted_at` is null limit 1 ---> time:4.68
+2019-12-26 09:55:03: update `reply` set `reply_content` = 'replyup', `updated_at` = '2019-12-26 09:55:03' where `rid` = 122 ---> time:3.31
+2019-12-26 09:55:45: select count(*) as aggregate from `message` where `id` = '65' ---> time:2.8
+2019-12-26 09:55:45: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.26
+2019-12-26 09:55:45: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.49
+2019-12-26 09:59:56: select count(*) as aggregate from `message` where `id` = '65' ---> time:4.83
+2019-12-26 09:59:56: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.32
+2019-12-26 09:59:56: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.41
+2019-12-26 09:59:59: select count(*) as aggregate from `message` where `id` = '65' ---> time:7.56
+2019-12-26 09:59:59: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.31
+2019-12-26 09:59:59: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.51
+2019-12-26 10:00:29: select count(*) as aggregate from `message` where `id` = '65' ---> time:4.97
+2019-12-26 10:00:29: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.52
+2019-12-26 10:00:29: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.96
+2019-12-26 10:05:56: select count(*) as aggregate from `message` where `id` = '65' ---> time:4.96
+2019-12-26 10:05:56: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.26
+2019-12-26 10:05:56: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.36
+2019-12-26 10:06:24: select count(*) as aggregate from `message` where `id` = '65' ---> time:7.31
+2019-12-26 10:06:24: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.29
+2019-12-26 10:06:24: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.57
+2019-12-26 10:06:25: select count(*) as aggregate from `message` where `id` = '65' ---> time:2.68
+2019-12-26 10:06:25: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.3
+2019-12-26 10:06:25: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.36
+2019-12-26 10:06:26: select count(*) as aggregate from `message` where `id` = '65' ---> time:3.32
+2019-12-26 10:06:26: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.36
+2019-12-26 10:06:26: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.33
+2019-12-26 10:06:51: select count(*) as aggregate from `message` where `id` = '65' ---> time:2.73
+2019-12-26 10:06:51: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.31
+2019-12-26 10:07:08: select count(*) as aggregate from `message` where `id` = '65' ---> time:2.53
+2019-12-26 10:07:08: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.39
+2019-12-26 10:07:08: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.37
+2019-12-26 10:08:22: select count(*) as aggregate from `message` where `id` = '65' ---> time:7.25
+2019-12-26 10:08:22: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.23
+2019-12-26 10:08:22: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.39
+2019-12-26 10:08:48: select count(*) as aggregate from `message` where `id` = '65' ---> time:5.15
+2019-12-26 10:08:48: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.31
+2019-12-26 10:08:48: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.47
+2019-12-26 10:08:58: select count(*) as aggregate from `message` where `id` = '65' ---> time:3.93
+2019-12-26 10:08:58: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.25
+2019-12-26 10:08:58: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.35
+2019-12-26 10:09:11: select count(*) as aggregate from `message` where `id` = '65' ---> time:3.2
+2019-12-26 10:09:11: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.39
+2019-12-26 10:09:12: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.41
+2019-12-26 10:09:17: select count(*) as aggregate from `message` where `id` = '11' ---> time:2.49
+2019-12-26 10:09:17: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.34
+2019-12-26 10:09:17: select * from `reply` where (`rid` = '119' and `message_id` = '11') and `reply`.`deleted_at` is null ---> time:0.31
+2019-12-26 10:09:29: select count(*) as aggregate from `message` where `id` = '64' ---> time:2.7
+2019-12-26 10:09:29: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.39
+2019-12-26 10:09:29: select * from `reply` where (`rid` = '119' and `message_id` = '64') and `reply`.`deleted_at` is null ---> time:0.3
+2019-12-26 10:09:30: select count(*) as aggregate from `message` where `id` = '64' ---> time:3.33
+2019-12-26 10:09:30: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.22
+2019-12-26 10:09:30: select * from `reply` where (`rid` = '119' and `message_id` = '64') and `reply`.`deleted_at` is null ---> time:0.39
+2019-12-26 10:09:35: select count(*) as aggregate from `message` where `id` = '65' ---> time:2.53
+2019-12-26 10:09:35: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.36
+2019-12-26 10:09:35: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.38
+2019-12-26 10:11:23: select count(*) as aggregate from `message` where `id` = '65' ---> time:5.36
+2019-12-26 10:11:23: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.32
+2019-12-26 10:11:23: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.36
+2019-12-26 10:11:28: select count(*) as aggregate from `message` where `id` = '64' ---> time:4.87
+2019-12-26 10:11:28: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.31
+2019-12-26 10:11:28: select * from `reply` where (`rid` = '119' and `message_id` = '64') and `reply`.`deleted_at` is null ---> time:0.39
+2019-12-26 10:12:17: select count(*) as aggregate from `message` where `id` = '64' ---> time:3.4
+2019-12-26 10:12:17: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.45
+2019-12-26 10:12:17: select * from `reply` where (`rid` = '119' and `message_id` = '64') and `reply`.`deleted_at` is null ---> time:0.5
+2019-12-26 10:12:19: select count(*) as aggregate from `message` where `id` = '64' ---> time:4.68
+2019-12-26 10:12:19: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.3
+2019-12-26 10:12:19: select * from `reply` where (`rid` = '119' and `message_id` = '64') and `reply`.`deleted_at` is null ---> time:0.83
+2019-12-26 10:12:56: select count(*) as aggregate from `message` where `id` = '64' ---> time:3.17
+2019-12-26 10:12:56: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.37
+2019-12-26 10:12:56: select * from `reply` where (`rid` = '119' and `message_id` = '64') and `reply`.`deleted_at` is null ---> time:0.46
+2019-12-26 10:16:36: select count(*) as aggregate from `message` where `id` = '64' ---> time:4.16
+2019-12-26 10:16:36: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.27
+2019-12-26 10:16:36: select * from `reply` where (`rid` = '119' and `message_id` = '64') and `reply`.`deleted_at` is null ---> time:0.35
+2019-12-26 10:16:53: select count(*) as aggregate from `message` where `id` = '64' ---> time:6.34
+2019-12-26 10:16:53: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.57
+2019-12-26 10:16:53: select * from `reply` where (`rid` = '119' and `message_id` = '64') and `reply`.`deleted_at` is null ---> time:0.45
+2019-12-26 10:17:23: select count(*) as aggregate from `message` where `id` = '64' ---> time:3.19
+2019-12-26 10:17:23: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.31
+2019-12-26 10:17:23: select * from `reply` where (`rid` = '119' and `message_id` = '64') and `reply`.`deleted_at` is null ---> time:0.37
+2019-12-26 10:23:20: select count(*) as aggregate from `message` where `id` = '65' ---> time:5.08
+2019-12-26 10:23:20: select count(*) as aggregate from `reply` where `rid` = '119' ---> time:0.47
+2019-12-26 10:23:20: select * from `reply` where (`rid` = '119' and `message_id` = '65') and `reply`.`deleted_at` is null ---> time:0.45
+2019-12-26 10:23:20: select * from `reply` where `reply`.`rid` = '119' and `reply`.`deleted_at` is null limit 1 ---> time:0.4
+2019-12-26 10:23:20: update `reply` set `r_reply_count` = `r_reply_count` + 1, `updated_at` = '2019-12-26 10:23:20' where `rid` = 119 and `reply`.`deleted_at` is null ---> time:0.52
+2019-12-26 10:23:20: insert into `reply` (`message_id`, `reply_content`, `parent_id`, `user_id`, `updated_at`, `created_at`) values ('65', 'test', '119', 18, '2019-12-26 10:23:20', '2019-12-26 10:23:20') ---> time:0.38
+2019-12-26 10:23:20: select * from `message` where `message`.`id` = '65' and `message`.`deleted_at` is null limit 1 ---> time:0.34
+2019-12-26 10:23:20: update `message` set `reply_count` = `reply_count` + 1, `updated_at` = '2019-12-26 10:23:20' where `id` = 65 and `message`.`deleted_at` is null ---> time:0.3
+2019-12-26 12:35:34: select * from `user` where `name` = '12345' limit 1 ---> time:5.13
+2019-12-26 12:35:36: select * from `reply` where `reply`.`rid` = '121' and `reply`.`deleted_at` is null limit 1 ---> time:1.29
+2019-12-26 12:36:43: select * from `reply` where `reply`.`rid` = '121' and `reply`.`deleted_at` is null limit 1 ---> time:1.17
+2019-12-26 12:37:08: select * from `reply` where `reply`.`rid` = '121' and `reply`.`deleted_at` is null limit 1 ---> time:1.03
+2019-12-26 12:37:10: select * from `reply` where `reply`.`rid` = '121' and `reply`.`deleted_at` is null limit 1 ---> time:0.77
+2019-12-26 12:37:11: select * from `reply` where `reply`.`rid` = '121' and `reply`.`deleted_at` is null limit 1 ---> time:0.83
+2019-12-26 12:37:22: select * from `reply` where `reply`.`rid` = '121' and `reply`.`deleted_at` is null limit 1 ---> time:0.83
+2019-12-26 12:38:23: select * from `reply` where `reply`.`rid` = '121' and `reply`.`deleted_at` is null limit 1 ---> time:2.09
+2019-12-26 12:39:51: select * from `reply` where `reply`.`rid` = '122' and `reply`.`deleted_at` is null limit 1 ---> time:1.54
+2019-12-26 12:39:51: update `reply` set `deleted_at` = '2019-12-26 12:39:51', `updated_at` = '2019-12-26 12:39:51' where `rid` = 122 ---> time:0.37
+2019-12-26 12:42:06: select * from `reply` where `reply`.`rid` = '122' and `reply`.`deleted_at` is null limit 1 ---> time:1.43
+2019-12-26 12:42:06: update `reply` set `deleted_at` = '2019-12-26 12:42:06', `updated_at` = '2019-12-26 12:42:06' where `rid` = 122 ---> time:0.31
+2019-12-26 12:42:06: select count(*) as aggregate from `reply` where `parent_id` = '122' and `reply`.`deleted_at` is null ---> time:0.35
+2019-12-26 12:42:06: select * from `message` where `message`.`id` = 65 and `message`.`deleted_at` is null limit 1 ---> time:0.42
+2019-12-26 12:42:06: update `message` set `reply_count` = `reply_count` - 1, `updated_at` = '2019-12-26 12:42:06' where `id` = 65 and `message`.`deleted_at` is null ---> time:0.31
+2019-12-26 12:42:50: select * from `reply` where `reply`.`rid` = '123' and `reply`.`deleted_at` is null limit 1 ---> time:1.67
+2019-12-26 12:42:50: update `reply` set `deleted_at` = '2019-12-26 12:42:50', `updated_at` = '2019-12-26 12:42:50' where `rid` = 123 ---> time:0.4
+2019-12-26 12:42:50: select count(*) as aggregate from `reply` where `parent_id` = '123' and `reply`.`deleted_at` is null ---> time:0.26
+2019-12-26 12:42:50: select * from `message` where `message`.`id` = 65 and `message`.`deleted_at` is null limit 1 ---> time:0.6
+2019-12-26 12:42:50: update `message` set `reply_count` = `reply_count` - 1, `updated_at` = '2019-12-26 12:42:50' where `id` = 65 and `message`.`deleted_at` is null ---> time:0.37
+2019-12-26 12:42:50: select * from `reply` where `reply`.`rid` = 119 and `reply`.`deleted_at` is null limit 1 ---> time:0.63
+2019-12-26 12:42:50: update `reply` set `r_reply_count` = `r_reply_count` - 1, `updated_at` = '2019-12-26 12:42:50' where `rid` = 119 and `reply`.`deleted_at` is null ---> time:0.57
+2019-12-26 12:44:41: select * from `reply` where `reply`.`rid` = '123' and `reply`.`deleted_at` is null limit 1 ---> time:2.74
+2019-12-26 12:45:45: select * from `reply` where `reply`.`rid` = '123' and `reply`.`deleted_at` is null limit 1 ---> time:1.12
+2019-12-26 12:45:57: select * from `reply` where `reply`.`rid` = '123' and `reply`.`deleted_at` is null limit 1 ---> time:0.89

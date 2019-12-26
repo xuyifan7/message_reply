@@ -120,8 +120,8 @@ class MessagePS
         } else {
             $reply = $reply->toArray();
         }
-        //$mes_id = collect($reply)->where('parent_id', 0)->pluck('message_id');dd($mes_id);
-        /*$reply = ReplyModel::where('message_id', $request['id']);
+        /*$mes_id = collect($reply)->where('parent_id', 0)->pluck('message_id');dd($mes_id);
+        $reply = ReplyModel::where('message_id', $request['id']);
         //dd($reply->message_id);
         //$mes_id = collect($reply)->message_id;
         $id = intval($request['id']);
