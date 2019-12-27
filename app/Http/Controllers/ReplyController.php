@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\ApiResponse;
 use App\Http\Requests\ReplyCreateRequest;
 use App\Http\Requests\ReplyUpdateRequest;
-use App\Http\Services\DataService\ReplyDS;
 use App\Http\Services\PageService\ReplyPS;
-use App\Models\ReplyModel;
 
 class ReplyController extends Controller
 {

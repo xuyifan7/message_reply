@@ -17,63 +17,25 @@ class MessageDS
         return $mes_data->toArray();
     }
 
-    public function messageUpdate(array $request, int $id)
+    public function getById($id)
     {
-        $result = array();
-        try {
-            $message = MessageModel::find($id);
-            if (is_null($message)) {
-                throw new \Exception("The message not exist!", 0);
-            } else {
-                $mes_up = $message->update($request);
-                if (!$mes_up) {
-                    throw new \Exception("update message failed!", 0);
-                } else {
-                    $result['status'] = 1;
-                    $result['msg'] = "update message success！";
-                    $result['data'] = $mes_up;
-                    return $result;
-                }
-            }
-        } catch (\Exception $exception) {
-            echo "message:".$exception->getMessage()."\t";
-            echo "code:".$exception->getCode();
-        }
+        return MessageModel::find($id);
     }
 
-    public function messageDelete(int $id)
+    public function update($message, $data)
     {
-        $message = MessageModel::find($id);
-        //MessageModel::withTrashed()->where('id', $id)->restore();die;
-        $result = array();
-        $result['status'] = 0;
-        if (!is_null($message)) {
-            DB::beginTransaction();
-            try {
-                $message->delete();
-                if (!$message->trashed()) {
-                    throw new \Exception("delete message failed!", 0);
-                }
-                $reply = ReplyModel::where('message_id', $id);
-                //dd($reply->count());
-                if ($reply->count() > 0) {
-                    $reply->delete();
-                    if (!$reply->trashed()) {
-                        throw new \Exception("delete message's reply failed!", 0);
-                    }
-                }
-                $result['status'] = 1;
-                $result['msg'] = "delete message success!";
-                DB::commit();
-            } catch (\Exception $exception) {
-                DB::rollback();
-                echo $exception->getMessage();
-                echo $exception->getCode();
-            }
-        } else {
-            $result['msg'] = "The message not exist!";
-        }
-        return $result;
+        return $message->update($data);
     }
+
+    public function delete($data)
+    {
+        return $data->delete();
+    }
+
+    public function getReply($id)
+    {
+        return ReplyModel::where('message_id', $id);
+    }
+
 
 }

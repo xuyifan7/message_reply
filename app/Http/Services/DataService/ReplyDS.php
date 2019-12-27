@@ -30,29 +30,14 @@ class ReplyDS
         return $reply->update($data);
     }
 
-    public function deleteReply($reply)
+    public function delete($data)
     {
-        return $reply->delete();
-    }
-
-    public function deleteReplies($replies)
-    {
-        return $replies->delete();
+        return $data->delete();
     }
 
     public function getByRid($rid)
     {
         return ReplyModel::find($rid);
-    }
-
-    public function incrementCountByPid($pid)
-    {
-        return ReplyModel::find($pid)->increment('r_reply_count');
-    }
-
-    public function incrementCountByMid($mid)
-    {
-        return MessageModel::find($mid)->increment('reply_count');
     }
 
     public function getReply($data)
@@ -63,6 +48,16 @@ class ReplyDS
     public function getReplyParent($rid)
     {
         return ReplyModel::where('parent_id', $rid);
+    }
+
+    public function incrementCountByPid($pid)
+    {
+        return ReplyModel::find($pid)->increment('r_reply_count');
+    }
+
+    public function incrementCountByMid($mid)
+    {
+        return MessageModel::find($mid)->increment('reply_count');
     }
 
     public function decrementCountMes($message_id)

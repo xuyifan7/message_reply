@@ -3,18 +3,61 @@
 
 namespace App\Http\Services\PageService;
 
-
 use App\Events\MessageClickEvent;
+use App\Exceptions\BaseExceptions;
+use App\Http\Services\DataService\MessageDS;
 use App\Http\Services\DataService\MessageStorageDS;
+use App\Http\Services\DataService\ReplyDS;
 use App\Models\MessageModel;
 use App\Models\ReplyModel;
 use App\Models\UserModel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class MessagePS
 {
+    public function messageUpdate(array $request, int $id)
+    {
+        $message = app(MessageDS::class)->getById($id);
+        if (is_null($message)) {
+            $this->exception("The message not exist!");
+        } else {
+            $mes_up = app(MessageDS::class)->update($message, $request);
+            return $mes_up;
+        }
+    }
+
+    public function messageDelete(int $id)
+    {
+        DB::beginTransaction();
+        try {
+            $message = app(MessageDS::class)->getById($id);
+            //MessageModel::withTrashed()->where('id', $id)->restore();die;
+            if (is_null($message)) {
+                $this->exception("The message not exist!");
+            } else {
+                app(MessageDS::class)->delete($message);
+                /*if (!$message->trashed()) {
+                    throw new \Exception("delete message failed!", 0);
+                }*/
+                $reply = app(MessageDS::class)->getReply($id);
+                if ($reply->count() > 0) {
+                    app(MessageDS::class)->delete($reply);
+                    /*if (!$reply->trashed()) {
+                        throw new \Exception("delete message's reply failed!", 0);
+                    }*/
+                }
+                DB::commit();
+            }
+        } catch (\Exception $exception) {
+            DB::rollback();
+            $this->exception($exception->getMessage(), -1005);
+        }
+        return true;
+    }
+
     public function getMessageList($current_page, $per_page)
     {
         $result = array();
@@ -174,5 +217,10 @@ class MessagePS
         $result['per_page'] = $per_page;
         $result['total'] = $total;
         return $result;
+    }
+
+    public function exception($message, int $code = 500)
+    {
+        throw new BaseExceptions($message, $code);
     }
 }

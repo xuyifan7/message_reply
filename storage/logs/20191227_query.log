@@ -1,0 +1,18 @@
+2019-12-27 03:07:25: select * from `user` where `name` = '12345' limit 1 ---> time:8.83
+2019-12-27 03:07:37: insert into `message` (`title`, `content`, `user_id`, `updated_at`, `created_at`) values ('test', 'test1', 18, '2019-12-27 03:07:37', '2019-12-27 03:07:37') ---> time:6.74
+2019-12-27 03:09:13: select * from `message` where `message`.`id` = 73 and `message`.`deleted_at` is null limit 1 ---> time:13.23
+2019-12-27 03:09:13: update `message` set `title` = 'testup', `content` = 'test1up', `updated_at` = '2019-12-27 03:09:13' where `id` = 73 ---> time:10.71
+2019-12-27 03:09:55: select * from `message` where `message`.`id` = 73 and `message`.`deleted_at` is null limit 1 ---> time:4.47
+2019-12-27 03:11:08: select * from `message` where `message`.`id` = 73 and `message`.`deleted_at` is null limit 1 ---> time:5.09
+2019-12-27 03:11:08: update `message` set `content` = 'test1upup', `updated_at` = '2019-12-27 03:11:08' where `id` = 73 ---> time:1.96
+2019-12-27 03:34:56: select * from `message` where `message`.`id` = 73 and `message`.`deleted_at` is null limit 1 ---> time:1.78
+2019-12-27 03:34:56: update `message` set `deleted_at` = '2019-12-27 03:34:56', `updated_at` = '2019-12-27 03:34:56' where `id` = 73 ---> time:0.38
+2019-12-27 03:34:56: select count(*) as aggregate from `reply` where `message_id` = 73 and `reply`.`deleted_at` is null ---> time:0.56
+2019-12-27 03:35:25: select count(*) as aggregate from `message` where `id` = '72' ---> time:4.46
+2019-12-27 03:35:25: insert into `reply` (`message_id`, `reply_content`, `user_id`, `updated_at`, `created_at`) values ('72', 'test', 18, '2019-12-27 03:35:25', '2019-12-27 03:35:25') ---> time:0.4
+2019-12-27 03:35:25: select * from `message` where `message`.`id` = '72' and `message`.`deleted_at` is null limit 1 ---> time:0.5
+2019-12-27 03:35:25: update `message` set `reply_count` = `reply_count` + 1, `updated_at` = '2019-12-27 03:35:25' where `id` = 72 and `message`.`deleted_at` is null ---> time:0.34
+2019-12-27 03:35:42: select * from `message` where `message`.`id` = 72 and `message`.`deleted_at` is null limit 1 ---> time:0.74
+2019-12-27 03:35:42: update `message` set `deleted_at` = '2019-12-27 03:35:42', `updated_at` = '2019-12-27 03:35:42' where `id` = 72 ---> time:0.31
+2019-12-27 03:35:42: select count(*) as aggregate from `reply` where `message_id` = 72 and `reply`.`deleted_at` is null ---> time:0.38
+2019-12-27 03:35:42: update `reply` set `deleted_at` = '2019-12-27 03:35:42', `updated_at` = '2019-12-27 03:35:42' where `message_id` = 72 and `reply`.`deleted_at` is null ---> time:0.37

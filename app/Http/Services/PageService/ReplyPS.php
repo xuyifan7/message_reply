@@ -4,7 +4,7 @@
 namespace App\Http\Services\PageService;
 
 
-use App\Exceptions\ArgumentNotExistExceptions;
+use App\Exceptions\BaseExceptions;
 use App\Http\Services\DataService\ReplyDS;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
@@ -30,7 +30,7 @@ class ReplyPS
             return $result;
         } catch (\Exception $exception) {
             DB::rollback();
-            $this->exception('commit failed!', -1003);
+            $this->exception($exception->getMessage(), -1003);
         }
     }
 
@@ -53,10 +53,10 @@ class ReplyPS
             if (is_null($reply)) {
                 $this->exception("The reply not exist!");
             }
-            app(ReplyDS::class)->deleteReply($reply);
+            app(ReplyDS::class)->delete($reply);
             $replies = app(ReplyDS::class)->getReplyParent($rid);
             if ($replies->count() > 0) {
-                app(ReplyDS::class)->deleteReplies($replies);
+                app(ReplyDS::class)->delete($replies);
             }
             $de_mes = app(ReplyDS::class)->decrementCountMes($reply->message_id);
             $this->updateCountFailed($de_mes, "decrease reply's count failed!");
@@ -67,14 +67,14 @@ class ReplyPS
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollback();
-            $this->exception('delete reply failed!', -1004);
+            $this->exception($exception->getMessage(), -1004);
         }
         return true;
     }
 
     public function exception($message, int $code = 500)
     {
-        throw new ArgumentNotExistExceptions($message, $code);
+        throw new BaseExceptions($message, $code);
     }
 
     public function updateCountFailed($data, $message)

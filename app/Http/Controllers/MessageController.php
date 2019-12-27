@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ApiResponse;
 use App\Http\Requests\MessageCreateRequest;
 use App\Http\Requests\MessageInfoRequest;
 use App\Http\Requests\MessageListRequest;
@@ -19,7 +20,7 @@ class MessageController extends Controller
         $user = $request->getUser();
         $data['user_id'] = $user['uid'];
         $result = app(MessageDS::class)->messageCreate($data);
-        return response()->json(['status' => 1, 'msg' => 'create message success！', 'data' => $result]);
+        return $result ? app(ApiResponse::class)->success($result, 'create message success!') : app(ApiResponse::class)->error([]);
     }
 
     public function update(MessageUpdateRequest $request, $id)
@@ -27,14 +28,14 @@ class MessageController extends Controller
         $data = $request->validated();
         $user = $request->getUser();
         $data['user_id'] = $user['uid'];
-        $result = app(MessageDS::class)->messageUpdate($data, $id);
-        return response()->json($result);
+        $result = app(MessagePS::class)->messageUpdate($data, $id);
+        return $result ? app(ApiResponse::class)->success([], 'update message success!') : app(ApiResponse::class)->error([]);
     }
 
     public function delete($id)
     {
-        $result = app(MessageDS::class)->messageDelete($id);
-        return response()->json($result);
+        $result = app(MessagePS::class)->messageDelete($id);
+        return $result ? app(ApiResponse::class)->success([], 'delete message success!') : app(ApiResponse::class)->error([]);
     }
 
     public function list(MessageListRequest $request)
