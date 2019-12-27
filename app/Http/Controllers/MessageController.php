@@ -41,8 +41,8 @@ class MessageController extends Controller
     public function list(MessageListRequest $request)
     {
         $data = $request->validated();
-        $result = app(MessagePS::class)->getMessageList($data['page'], $data['per_page']);
-        return response()->json($result);
+        $result = app(MessagePS::class)->getMessageList($data);
+        return $result ? app(ApiResponse::class)->success($result, 'Messages list') : app(ApiResponse::class)->error([]);
     }
 
     public function info(MessageInfoRequest $request)

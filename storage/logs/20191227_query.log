@@ -16,3 +16,82 @@
 2019-12-27 03:35:42: update `message` set `deleted_at` = '2019-12-27 03:35:42', `updated_at` = '2019-12-27 03:35:42' where `id` = 72 ---> time:0.31
 2019-12-27 03:35:42: select count(*) as aggregate from `reply` where `message_id` = 72 and `reply`.`deleted_at` is null ---> time:0.38
 2019-12-27 03:35:42: update `reply` set `deleted_at` = '2019-12-27 03:35:42', `updated_at` = '2019-12-27 03:35:42' where `message_id` = 72 and `reply`.`deleted_at` is null ---> time:0.37
+2019-12-27 07:05:59: select * from `user` where `name` = '12345' limit 1 ---> time:9.89
+2019-12-27 07:06:08: insert into `message` (`title`, `content`, `user_id`, `updated_at`, `created_at`) values ('test', 'test1', 18, '2019-12-27 07:06:08', '2019-12-27 07:06:08') ---> time:5.87
+2019-12-27 07:06:15: select * from `message` where `message`.`id` = 74 and `message`.`deleted_at` is null limit 1 ---> time:3.51
+2019-12-27 07:06:15: update `message` set `deleted_at` = '2019-12-27 07:06:15', `updated_at` = '2019-12-27 07:06:15' where `id` = 74 ---> time:0.67
+2019-12-27 07:06:15: select count(*) as aggregate from `reply` where `message_id` = 74 and `reply`.`deleted_at` is null ---> time:0.35
+2019-12-27 08:56:07: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:5.27
+2019-12-27 08:56:07: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:1.72
+2019-12-27 08:56:07: select * from `user` where `uid` in (18) ---> time:0.35
+2019-12-27 08:59:01: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:4.28
+2019-12-27 08:59:01: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 610 ---> time:0.36
+2019-12-27 08:59:01: select * from `user` where 0 = 1 ---> time:0.33
+2019-12-27 08:59:14: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:4.51
+2019-12-27 08:59:14: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.31
+2019-12-27 08:59:14: select * from `user` where `uid` in (18) ---> time:0.36
+2019-12-27 09:03:20: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:5.16
+2019-12-27 09:03:20: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:0.33
+2019-12-27 09:03:20: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 25 ---> time:0.29
+2019-12-27 09:03:20: select * from `user` where `uid` in (5) ---> time:0.67
+2019-12-27 09:03:27: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:4.39
+2019-12-27 09:03:27: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:0.48
+2019-12-27 09:03:27: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.5
+2019-12-27 09:03:27: select * from `user` where `uid` in (18) ---> time:0.35
+2019-12-27 09:21:34: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:4.77
+2019-12-27 09:21:34: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:0.34
+2019-12-27 09:21:34: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.32
+2019-12-27 09:21:34: select * from `user` where `uid` in (18) ---> time:0.41
+2019-12-27 09:21:45: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:4.79
+2019-12-27 09:21:45: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:0.36
+2019-12-27 09:21:45: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 5 ---> time:0.5
+2019-12-27 09:21:45: select * from `user` where `uid` in (16, 7) ---> time:0.36
+2019-12-27 09:21:55: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:3.39
+2019-12-27 09:21:55: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:0.55
+2019-12-27 09:21:55: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.49
+2019-12-27 09:21:55: select * from `user` where `uid` in (18) ---> time:0.34
+2019-12-27 09:27:49: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:5.2
+2019-12-27 09:27:49: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:0.28
+2019-12-27 09:27:49: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.35
+2019-12-27 09:27:49: select * from `user` where `uid` in (18) ---> time:0.43
+2019-12-27 09:28:28: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:5.38
+2019-12-27 09:28:28: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:0.29
+2019-12-27 09:28:28: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.4
+2019-12-27 09:28:28: select * from `user` where `uid` in (18) ---> time:0.35
+2019-12-27 09:40:34: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:5.87
+2019-12-27 09:40:57: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:5.56
+2019-12-27 09:41:51: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:3.29
+2019-12-27 09:41:52: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:2.66
+2019-12-27 09:41:53: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:3.65
+2019-12-27 09:42:29: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:3.95
+2019-12-27 09:42:50: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:5.29
+2019-12-27 09:42:53: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:2.93
+2019-12-27 09:42:56: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:2.65
+2019-12-27 09:43:00: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:5.85
+2019-12-27 09:43:53: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:6.13
+2019-12-27 09:43:56: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:3.11
+2019-12-27 09:44:00: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:3.13
+2019-12-27 09:46:25: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:5.55
+2019-12-27 09:46:25: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.34
+2019-12-27 09:46:25: select * from `user` where `uid` in (18) ---> time:0.34
+2019-12-27 10:39:57: select * from `user` where `name` = '12345' limit 1 ---> time:4.99
+2019-12-27 10:40:03: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:6.95
+2019-12-27 10:40:03: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.52
+2019-12-27 10:40:03: select * from `user` where `uid` in (18) ---> time:0.39
+2019-12-27 10:40:11: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:2.84
+2019-12-27 10:40:11: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.43
+2019-12-27 10:40:11: select * from `user` where `uid` in (18) ---> time:0.57
+2019-12-27 10:40:15: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:2.83
+2019-12-27 10:40:15: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.35
+2019-12-27 10:40:15: select * from `user` where `uid` in (18) ---> time:0.48
+2019-12-27 10:41:46: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:3.06
+2019-12-27 10:41:46: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.38
+2019-12-27 10:41:46: select * from `user` where `uid` in (18) ---> time:0.34
+2019-12-27 10:41:50: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:3.13
+2019-12-27 10:41:50: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.49
+2019-12-27 10:41:50: select * from `user` where `uid` in (18) ---> time:0.4
+2019-12-27 10:42:25: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:4.57
+2019-12-27 10:42:25: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.38
+2019-12-27 10:42:25: select * from `user` where `uid` in (18) ---> time:0.36
+2019-12-27 11:02:20: select count(*) as aggregate from `message` where `message`.`deleted_at` is null ---> time:6.53
+2019-12-27 11:02:20: select * from `message` where `message`.`deleted_at` is null order by `created_at` desc limit 5 offset 0 ---> time:0.37

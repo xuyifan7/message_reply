@@ -58,13 +58,16 @@ class MessagePS
         return true;
     }
 
-    public function getMessageList($current_page, $per_page)
+    public function getMessageList(array $request)
     {
-        $result = array();
         $mes = new MessageModel();
-        $message = $this->page($mes, $current_page, $per_page);
-        $page_start = $this->offSet($current_page, $per_page);
-        $message_list = $mes->offset($page_start)->limit($per_page)->latest()->get()->toArray();
+        $page = $request['page'];
+        $per_page = $request['per_page'];
+        $total = $mes->count();
+        $last_page = ceil($total / $per_page);
+        $page = $this->page($page, $last_page);
+        $message_list = $this->paging($mes, $page, $per_page)->latest()->get()->toArray();
+        dd($message_list);
         $user_ids = collect($message_list)->pluck('user_id')->unique()->toArray();
         $user = UserModel::whereIn('uid', $user_ids)->get()->toArray();
         //$user = collect($user)->pluck('name', 'uid')->toArray();
@@ -72,11 +75,10 @@ class MessagePS
         foreach ($message_list as $k => &$v) {
             $v['name'] = $user[$v['user_id']]['name'];
         }
+
+        $message['total'] = $total;
         $message['message_list'] = $message_list;
-        $result['status'] = 1;
-        $result['msg'] = "Messages list";
-        $result['data'] = $message;
-        return $result;
+        return $message;
     }
 
     //show one message's all replies and paginate
@@ -105,7 +107,7 @@ class MessagePS
             if ($current_page > $last_page) {
                 $current_page = $last_page;
             }
-            $page_start = $this->offSet($current_page, $per_page);
+            $page_start = ($current_page - 1) * $per_page;
             $replies = array_slice($rs, $page_start, $per_page);
             $message = $mes->toArray();
             $message['name'] = $user->name;
@@ -137,9 +139,11 @@ class MessagePS
         $re = ReplyModel::where('message_id', $request['id']);
         //$reply = ReplyModel::where('message_id', $request['id'])->where('parent_id', 0)->oldest()->paginate(2);
         $data = $re->where('parent_id', 0);
-        $reply = $this->page($data, $current_page, $per_page);
-        $page_start = $this->offSet($current_page, $per_page);
-        $reply['data'] = $data->offset($page_start)->limit($per_page)->get()->toArray();
+        $total = $data->count();
+        $last_page = ceil($total / $per_page);
+        $current_page = $this->page($current_page, $last_page);
+        $reply['data'] = $this->paging($data, $current_page, $per_page)->get()->toArray();
+        $reply['total'] = $total;
         //dd($reply['data']);
         /*foreach ($reply['data'] as $k => $v) {
             $re_r = $re->latest()->whereIn('parent_id', $v['rid'])->keyBy('parent_id')->toArray();
@@ -198,25 +202,16 @@ class MessagePS
         return $result;
     }
 
-    public function offSet($current_page, $per_page)
+    public function page($page, $last_page)
     {
-        $page_start = ($current_page - 1) * $per_page;
-        return $page_start;
+        return ($page > $last_page) ? $last_page : $page;
     }
 
-    public function page($data, $current_page, $per_page)
+    public function paging($data, $page, $per_page)
     {
-        $result = array();
-        $total = $data->count();
-        $last_page = ceil($total / $per_page);
-        if ($current_page > $last_page) {
-            $current_page = $last_page;
-        }
-        $result['current_page'] = $current_page;
-        $result['last_page'] = $last_page;
-        $result['per_page'] = $per_page;
-        $result['total'] = $total;
-        return $result;
+        $offset = ($page - 1) * $per_page;
+        $rs = $data->offset($offset)->limit($per_page);
+        return $rs;
     }
 
     public function exception($message, int $code = 500)
